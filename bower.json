@@ -1,0 +1,29 @@
+{
+  "name": "WykopExt",
+  "version": "0.0.1",
+  "homepage": "https://github.com/Mati365/WykopExt",
+  "authors": [
+    "mateusz <cziken58@gmail.com>"
+  ],
+  "description": "A simple Google Chrome extension that show notifications from Wykop.pl",
+  "moduleType": [
+    "amd"
+  ],
+  "keywords": [
+    "wapi",
+    "wykop",
+    "chrome"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "ext/bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "~2.1.4"
+  }
+}
