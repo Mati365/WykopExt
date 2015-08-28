@@ -24,6 +24,8 @@
     "tests"
   ],
   "dependencies": {
+    "cleancss": "git@github.com:Mati365/CleanCSS.git",
+    "font-awesome": "~4.4.0",
     "jquery": "~2.1.4"
   }
 }

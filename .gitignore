@@ -3,3 +3,5 @@ build
 node_modules
 .idea
 build/bower_components
+typings
+ext/defs

@@ -1,0 +1,18 @@
+{
+  "version": "v4",
+  "repo": "borisyankov/DefinitelyTyped",
+  "ref": "master",
+  "path": "ext/defs",
+  "bundle": "typings/tsd.d.ts",
+  "installed": {
+    "webrtc/MediaStream.d.ts": {
+      "commit": "0a51ae619b1729429892d1d0d25ec4476f88cad2"
+    },
+    "es6-promise/es6-promise.d.ts": {
+      "commit": "0a51ae619b1729429892d1d0d25ec4476f88cad2"
+    },
+    "chrome/chrome.d.ts": {
+      "commit": "0a51ae619b1729429892d1d0d25ec4476f88cad2"
+    }
+  }
+}

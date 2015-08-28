@@ -3,15 +3,16 @@
   "version": "0.0.1",
   "description": "A simple Google Chrome extension that show notifications from Wykop.pl",
   "main": "build/popup.html",
-  "dependencies": {
-  },
+  "dependencies": {},
   "devDependencies": {
     "grunt": "^0.4.5",
     "grunt-contrib-jade": "^0.15.0",
+    "grunt-contrib-less": "^1.0.1",
     "grunt-contrib-watch": "^0.6.1",
     "grunt-typescript": "^0.7.0",
     "grunt-wiredep": "^2.0.0",
-    "load-grunt-tasks": "^3.2.0"
+    "load-grunt-tasks": "^3.2.0",
+    "tsd": "^0.6.3"
   },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
