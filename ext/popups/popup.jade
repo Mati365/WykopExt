@@ -10,28 +10,11 @@ html
 
     body
         // bower:js
-        script(src='../../build/bower_components/jquery/dist/jquery.js')
+        script(src='../../build/bower_components/angular/angular.js')
+        script(src='../../build/bower_components/angular-resource/angular-resource.js')
+        script(src='../../build/bower_components/angular-ui-router/release/angular-ui-router.js')
+        script(src='../../build/bower_components/underscore/underscore.js')
         // endbower
-        .page
-            .row
-                .col100
-                    img.header(src='../../resources/banner.png')
+        script(src='../../build/js/popup.js')
 
-            .row
-                .col100
-                    .header.small Login:
-                    .labeled.icon
-                        i.left.fa.fa-user
-                        input(type='text', placeholder='login', required)
-
-                .col100
-                    .header.small Hasło:
-                    .labeled.icon
-                        i.left.fa.fa-key
-                        input(type='password', placeholder='hasło', required)
-            .row
-                .col50
-                    button.blue Zaloguj się
-                .col50
-                    span.color-info.pull-right Ver. 0.0.1
-
+        .page(ui-view)

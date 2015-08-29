@@ -19,6 +19,9 @@
     , "background": {
         "scripts": [
               "build/bower_components/jquery/dist/jquery.min.js"
+            , "build/bower_components/cryptojslib/rollups/md5.js"
+            , "build/bower_components/cryptojslib/components/md5-min.js"
+            , "build/bower_components/underscore/underscore-min.js"
             , "build/js/background.js"
         ]
     }

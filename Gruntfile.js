@@ -1,13 +1,13 @@
 module.exports = function(grunt) {
     grunt.initConfig({
-        watch: {
+          watch: {
             all: {
                   options: {
                       livereload: true
                     , debounceDelay: 250
                 }
                 , files: ['ext/**/*']
-                , tasks: ['jade', 'typescript', 'less']
+                , tasks: ['jade', 'typescript:ui', 'typescript:background', 'less']
             }
         }
         , wiredep: {
@@ -15,6 +15,7 @@ module.exports = function(grunt) {
                   src: ['ext/popups/popup.jade']
                 , dependencies: true
                 , devDependencies: false
+                , exclude: ['cryptojslib', 'jquery']
                 , overrides: {
                     'font-awesome': { main: ['css/font-awesome.min.css'] }
                 }
@@ -47,12 +48,18 @@ module.exports = function(grunt) {
             }
         }
         , typescript: {
-            base: {
-                  src: ['ext/ts/**/*.ts']
-                , dest: 'build/js'
+              ui: {
+                  src: ['ext/ts/ui/**/*.ts']
+                , dest: 'build/js/popup.js'
                 , options: {
-                      target: 'es5'
-                    , module: 'amd'
+                    target: 'es5'
+                }
+            }
+            , background: {
+                  src: ['ext/ts/background/**/*.ts']
+                , dest: 'build/js/background.js'
+                , options: {
+                    target: 'es5'
                 }
             }
         }
