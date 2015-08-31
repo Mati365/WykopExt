@@ -12,7 +12,7 @@ module Ext.UI {
             /** Ekran błędu */
             .state('login', {
                   url: '/login'
-                , templateUrl: 'build/popups/login.html'
+                , templateUrl: 'login.html'
                 , controller: 'LoginCtrl'
             });
     }

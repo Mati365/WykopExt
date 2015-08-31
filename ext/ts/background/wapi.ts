@@ -11,39 +11,11 @@
 ///<reference path="../../defs/cryptojs/cryptojs.d.ts"/>
 ///<reference path="../../defs/underscore/underscore.d.ts"/>
 
+///<reference path="../shared.ts"/>
+
 module Ext.WAPI {
-    /** Format z python'a */
-    String.prototype['format'] = function(...params: any[]): string {
-        return this.replace(/\{(\w*)\}/g, (match, val) => {
-            return isNaN(val) ? params[0][val] : params[val];
-        });
-    };
-
-    /**
-     * Aseracja, rzucanie wyjątkiem jeśli nie jest spełnione
-     * @param {any}     condition Warunek
-     * @param {boolean} message   Wiadomość w wyjątku
-     */
-    function _assert(condition: any, message: string) {
-        if(!condition)
-            throw new Error(message);
-    }
-
-    /** Linki */
-    export enum LinksCategory {
-          PROMOTED = <any>'promoted'
-        , UPCOMING = <any>'upcoming'
-    }
-
-    /** Typ sortowania */
-    export enum SortBy {
-          DAY   = <any>'day'
-        , WEEK  = <any>'week'
-        , MONTH = <any>'month'
-    }
-
     /** Parametry wykopu w request */
-    type Params = { [index: string]: any };
+    export type Params = { [index: string]: any };
 
     /** Podstawowy klient WAPI */
     export class Client {
@@ -124,7 +96,7 @@ module Ext.WAPI {
         }
 
         /**
-         * Szybloe tworzenie stałem metody API niezależnej od argumentów
+         * Szybkie tworzenie stałej metody API bez argumentów
          * @param {User}     user           Użytkownik
          * @param {string}   action         Akcja
          * @param {string[]} postArguments  Argumenty
@@ -132,10 +104,10 @@ module Ext.WAPI {
          * @returns Metoda API
          */
         public apiGetter(user: User, action: string, parser?: (data: any) => any, ...postArguments: string[]) {
-            return (...args: any[]) => {
+            return (...args: any[]): JQueryPromise<any> => {
                 let postData: Params = {};
-                _(postArguments).each(arg => {
-                    postData[arg] = args[arg];
+                _(postArguments).each((arg, index) => {
+                    postData[arg] = args[index];
                 });
                 return this.request(action, {}, user && user.userKey, true, postData)
                     .then(data => {
@@ -143,65 +115,76 @@ module Ext.WAPI {
                     });
             };
         }
-
-        /**
-         * Pobieranie linków z wykopu
-         * @param {LinksCategory}   category Kategoria, z której ma być pobierany
-         * @param {SortBy}          sort     Określanie metody sortowania
-         * @returns Promise
-         */
-        public links( category: LinksCategory = LinksCategory.PROMOTED
-                    , sort: SortBy = null) {
-            return this.request('links/' + category, { sort: sort });
-        }
     }
 
-    /** Powiadomienie */
-    export interface Notification {
-        author: string;
-        author_avatar: string;
-        date: string;
-        body: string;
-        url: string;
+    /** Linki */
+    export enum LinksCategory {
+          PROMOTED = <any>'promoted'
+        , UPCOMING = <any>'upcoming'
+    }
+
+    /** Typ sortowania */
+    export enum SortBy {
+          DAY   = <any>'day'
+        , WEEK  = <any>'week'
+        , MONTH = <any>'month'
     }
 
     /** Użytkownik wykopu */
     export class User {
         constructor(
               private client: Client
-            , public userKey: string) {
+            , public userKey: string = null) {
         }
+
+        /** Pobieranie klienta API */
+        public get apiClient() { return this.client; }
 
         /** Metody dot. powiadomień */
         public Notifications = {
             /** Pobieranie liczby powiadomień tekstowych */
               getCount: this.client.apiGetter(this, 'mywykop/notificationscount')
-            , getList: this.client.apiGetter(this, 'mywykop/notifications', data => {
-                return _(data).map(val => {
-                    return <Notification> _(val).pick('author', 'author_avatar', 'date', 'body', 'url');
-                });
-            })
+            , getList: this.client.apiGetter(this, 'mywykop/notifications')
 
             /** Pobieranie listy powiadomień tag */
             , getTagsCount: this.client.apiGetter(this, 'mywykop/hashtagsnotificationscount')
             , getTagsList: this.client.apiGetter(this, 'mywykop/hashtagsnotifications')
         };
 
-        public Entry = {
+        /** Metody mikrobloga */
+        public Entries = {
+            /**
+             * Pobieranie listy wiadomości z mikrobloga
+             * @param {number} page   Numer strony
+             */
+              index: (page: number = 0) => {
+                return this.client.apiGetter(this, 'stream/index', null, 'page')(page);
+            }
+            /**
+             * Pobieranie listy najaktywniejszych dyskusji z mikrobloga
+             * @param {number} page   Numer strony
+             * @param {number} period Okres czasu
+             */
+            , hot: (page: number = 0, period: number = 6) => {
+                return this.client.apiGetter(this, 'stream/hot', null, 'page', 'period')(page, period);
+            }
             /**
              * Wysyłanie wiadomości na mikrobloga
              * @param {string} text Zawrtość wiadomości
              */
-            add: (text: string)=> {
-                this.client.request('entries/add', {}, this.userKey, true, { body: text });
+            , add: (text: string) => {
+                return this.client.apiGetter(this, 'entries/add', null, 'body')(text);
             }
         };
-    }
 
-    /** Użytkownik wykopu */
-    new Client('', '')
-        .login('Babok', '')
-        .Notifications.getList().done(d => {
-            console.log(d);
-        });
+        /**
+         * Pobieranie linków z wykopu
+         * @param {LinksCategory}   category Kategoria, z której ma być pobierany
+         * @param {SortBy}          sort     Określanie metody sortowania
+         */
+        public links( category: LinksCategory = LinksCategory.PROMOTED
+            , sort: SortBy = null) {
+            return this.client.request('links/' + category, { sort: sort });
+        }
+    }
 }
