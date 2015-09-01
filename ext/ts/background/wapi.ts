@@ -1,5 +1,4 @@
 /**
- * Created by mateusz on 28.08.15.
  * WAPI v.0.0.1
  *
  * Prosta implemenetacja API wykopu potrzebna
@@ -65,7 +64,7 @@ module Ext.WAPI {
             let sortedPost = _(post).sortBy((val, key) => {
                 return key;
             });
-            return $.ajax({
+            return $.ajax(<JQueryAjaxSettings> {
                   url: url
                 , method: post ? 'POST' : 'GET'
                 , data: post
@@ -90,9 +89,7 @@ module Ext.WAPI {
             }).responseJSON;
 
             /** Tworzenie użytkownika na podstawie odpowiedzi serwera */
-            return new User(this
-                , data.userkey
-            );
+            return data.userkey && new User(this, data.userkey);
         }
 
         /**
@@ -183,7 +180,7 @@ module Ext.WAPI {
          * @param {SortBy}          sort     Określanie metody sortowania
          */
         public links( category: LinksCategory = LinksCategory.PROMOTED
-            , sort: SortBy = null) {
+                    , sort: SortBy = null) {
             return this.client.request('links/' + category, { sort: sort });
         }
     }

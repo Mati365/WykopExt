@@ -1,19 +1,23 @@
-/**
- * Created by mateusz on 29.08.15.
- * Podstawowy routing rozszerzenia
- */
-///<reference path="_tsd.ts"/>
+///<reference path="defs.ts"/>
 
 module Ext.UI {
     export function routes(
-        $stateProvider: ng.ui.IStateProvider
+          $compileProvider: ng.ICompileProvider
+        , $routeProvider: ng.route.IRouteProvider
     ) {
-        $stateProvider
-            /** Ekran błędu */
-            .state('login', {
-                  url: '/login'
-                , templateUrl: 'login.html'
+        $compileProvider
+            .aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+        $routeProvider
+            .when('/login', {
+                  templateUrl: 'login.html'
                 , controller: 'LoginCtrl'
+            })
+            .when('/user', {
+                  templateUrl: 'user.html'
+                , controller: 'UserCtrl'
+            })
+            .otherwise({
+                redirectTo: '/login'
             });
     }
 }

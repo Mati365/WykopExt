@@ -1,20 +1,31 @@
+// Pole formularza
+mixin formField(header, icon, type, placeholder, model)
+    .header.small.color-divider #{header}:
+    .labeled.icon
+        i(class='left fa fa-#{icon}')
+        input(type=type, placeholder=placeholder, ng-model=model, required)&attributes(attributes)
+
 .row
     .col100
         img.header(src='../../resources/banner.png')
 
+.header-title
+    strong Dane użytkownika:
 .row
-    .col100
-        .header.small Login:
-        .labeled.icon
-            i.left.fa.fa-user
-            input(type='text', placeholder='login', required)
-    .col100
-        .header.small Hasło:
-        .labeled.icon
-            i.left.fa.fa-key
-            input(type='password', placeholder='hasło', required)
+    .col100 #[+formField('Login', 'user', 'text', 'login', 'data.userLogin')]
+    .col100 #[+formField('Klucz', 'key', 'text', 'klucz', 'data.userKey')]
+
+.header-title
+    strong Dane API:
 .row
+    .col100 #[+formField('AppKey', 'key', 'text', 'klucz aplikacji', 'data.apiKey')]
+    .col100 #[+formField('AppSecret', 'key', 'text', 'klucz prywatny aplikacji', 'data.apiSecret')]
+.row
+    .col100(ng-show='error')
+        .message.danger
+            i.fa.fa-exclamation-triangle.fa-lg
+            | {{ error }}
     .col50
-        button.blue Zaloguj się
+        button.blue(ng-click='fn.login()') Zaloguj się
     .col50
         span.color-info.pull-right Ver. 0.0.1

@@ -1,12 +1,9 @@
-/**
- * Created by mateusz on 28.08.15.
- */
-///<reference path="_tsd.ts"/>
+///<reference path="defs.ts"/>
 ///<reference path="routes.ts"/>
 
 module Ext.UI {
     let mods = [
-          'ui.router'
+          'ngRoute'
         , 'ngResource'
     ];
     export let mod = angular

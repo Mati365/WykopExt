@@ -21,4 +21,12 @@ module Ext {
         if(!condition)
             throw new Error(message);
     }
+
+    /** Dane logowania */
+    export interface ILoginData extends Storage {
+        apiKey: string;
+        apiSecret: string;
+        userLogin: string;
+        userKey: string;
+    }
 }

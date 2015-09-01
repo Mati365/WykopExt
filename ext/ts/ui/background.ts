@@ -4,17 +4,18 @@
 module Ext.UI {
     export interface ExtAPI {
         user: any;
-        login(apiKey: string, apiSecret: string, login: string, key: string);
+        login(data: ILoginData);
     }
     export class Background {
         private api: ExtAPI = (<any> chrome.extension.getBackgroundPage()).Ext.Background;
-        public isLogged(): boolean {
-            return this.api.user;
-        }
+
+        /** Metody skryptu background */
+        public get user(): any { return this.api.user; }
+        public login = this.api.login;
     }
     mod
         .service('background', Background)
-        .run(($state: ng.ui.IStateService, background: Background) => {
-            !background.isLogged() && $state.go('login');
+        .run(($location: ng.ILocationService, background: Background) => {
+            $location.path(background.user ? '/user' : '/login');
         })
 }
