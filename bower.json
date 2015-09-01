@@ -27,7 +27,7 @@
     "angular": "~1.4.5",
     "angular-resource": "~1.4.5",
     "angular-route": "~1.4.5",
-    "cleancss": "git@github.com:Mati365/CleanCSS.git",
+    "cleancss": "https://github.com/Mati365/OBKK-client.git",
     "cryptojslib": "~3.1.2",
     "font-awesome": "~4.4.0",
     "jquery": "~2.1.4",
