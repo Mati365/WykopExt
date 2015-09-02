@@ -1,6 +1,5 @@
 // Pole formularza
-mixin formField(header, icon, type, placeholder, model)
-    .header.small.color-divider #{header}:
+mixin formField(icon, type, placeholder, model)
     .labeled.icon
         i(class='left fa fa-#{icon}')
         input(type=type, placeholder=placeholder, ng-model=model, required)&attributes(attributes)
@@ -12,14 +11,14 @@ mixin formField(header, icon, type, placeholder, model)
 .header-title
     strong Dane użytkownika:
 .row
-    .col100 #[+formField('Login', 'user', 'text', 'login', 'data.userLogin')]
-    .col100 #[+formField('Klucz', 'key', 'text', 'klucz', 'data.userKey')]
+    .col100 #[+formField('user', 'text', 'login', 'data.userLogin')]
+    .col100 #[+formField('key', 'text', 'klucz konta', 'data.userKey')]
 
 .header-title
     strong Dane API:
 .row
-    .col100 #[+formField('AppKey', 'key', 'text', 'klucz aplikacji', 'data.apiKey')]
-    .col100 #[+formField('AppSecret', 'key', 'text', 'klucz prywatny aplikacji', 'data.apiSecret')]
+    .col100 #[+formField('key', 'text', 'klucz aplikacji', 'data.apiKey')]
+    .col100 #[+formField('key', 'text', 'prywatny klucz aplikacji', 'data.apiSecret')]
 .row
     .col100(ng-show='error')
         .message.danger

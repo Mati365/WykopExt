@@ -13,6 +13,23 @@
 ///<reference path="../shared.ts"/>
 
 module Ext.WAPI {
+    /** Format z python'a */
+    String.prototype['format'] = function(...params: any[]): string {
+        return this.replace(/\{(\w*)\}/g, (match, val) => {
+            return isNaN(val) ? params[0][val] : params[val];
+        });
+    };
+
+    /**
+     * Aseracja, rzucanie wyjątkiem jeśli nie jest spełnione
+     * @param {any}     condition Warunek
+     * @param {boolean} message   Wiadomość w wyjątku
+     */
+    export function _assert(condition: any, message: string) {
+        if(!condition)
+            throw new Error(message);
+    }
+
     /** Parametry wykopu w request */
     export type Params = { [index: string]: any };
 
@@ -89,7 +106,12 @@ module Ext.WAPI {
             }).responseJSON;
 
             /** Tworzenie użytkownika na podstawie odpowiedzi serwera */
-            return data.userkey && new User(this, data.userkey);
+            return data.userkey
+                && new User(
+                      this
+                    , data.userkey
+                    , <UserInfo> _(data).pick('login', 'avatar', 'rank', 'url', 'sex')
+                );
         }
 
         /**
@@ -114,24 +136,13 @@ module Ext.WAPI {
         }
     }
 
-    /** Linki */
-    export enum LinksCategory {
-          PROMOTED = <any>'promoted'
-        , UPCOMING = <any>'upcoming'
-    }
-
-    /** Typ sortowania */
-    export enum SortBy {
-          DAY   = <any>'day'
-        , WEEK  = <any>'week'
-        , MONTH = <any>'month'
-    }
-
     /** Użytkownik wykopu */
     export class User {
         constructor(
               private client: Client
-            , public userKey: string = null) {
+            , public userKey: string
+            , public info: UserInfo
+        ) {
         }
 
         /** Pobieranie klienta API */

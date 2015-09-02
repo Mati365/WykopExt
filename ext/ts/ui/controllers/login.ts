@@ -3,11 +3,11 @@
 ///<reference path="../popup.ts"/>
 
 module Ext.UI {
-    interface LoginScope extends ICtrlScope<Login> {
-        data: ILoginData;
+    interface LoginScope extends CtrlScope<LoginCtrl> {
+        data: LoginData;
         error: string;
     }
-    class Login extends Controller {
+    export class LoginCtrl extends Controller {
         constructor(
               public $scope: LoginScope
             , private $location: ng.ILocationService
@@ -24,5 +24,5 @@ module Ext.UI {
                 this.$scope.error = 'Błędne dane logowania :(';
         }
     }
-    mod.controller('LoginCtrl', Login)
+    mod.controller('LoginCtrl', LoginCtrl)
 }

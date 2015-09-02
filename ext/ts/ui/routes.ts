@@ -5,8 +5,7 @@ module Ext.UI {
           $compileProvider: ng.ICompileProvider
         , $routeProvider: ng.route.IRouteProvider
     ) {
-        $compileProvider
-            .aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
+        $compileProvider.aHrefSanitizationWhitelist(/^\s*(https?|ftp|mailto|chrome-extension):/);
         $routeProvider
             .when('/login', {
                   templateUrl: 'login.html'

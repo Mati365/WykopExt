@@ -1,1 +1,10 @@
-| Strona usera
+.row.inline-menu
+    a.segment(href='') Powiadomienia
+    a.segment(href='#/user/dupa') Mikroblog
+    a.segment(href='') Wykop
+
+.row(app-view-segment='1')
+.row
+    | {{ userInfo.login + ' #' + userInfo.rank + '' }}
+    .pull-right
+        a(href='#/login') Wyloguj się

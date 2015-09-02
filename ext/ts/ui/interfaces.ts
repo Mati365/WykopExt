@@ -10,7 +10,7 @@ module Ext.UI {
      * bindować miliona metod i można
      * np. w ng-click='caller.dupa()'
      */
-    export interface ICtrlScope<T> extends ng.IScope {
+    export interface CtrlScope<T> extends ng.IScope {
         fn: T;
     }
     export class Controller {
