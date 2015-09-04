@@ -28,8 +28,8 @@ module Ext.UI {
         /** Pobieranie powiadomień */
         private loadNotifications() {
             this.background[this.$scope.showTags
-                        ? 'getNotifications'
-                        : 'getTagsNotifications'
+                        ? 'getTagsNotifications'
+                        : 'getNotifications'
                     ]().done(data => {
                 this.$scope.notifications = data;
                 this.$scope.$digest();
