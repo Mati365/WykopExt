@@ -1,3 +1,10 @@
+::-webkit-scrollbar {
+  display: none;
+}
+html, body {
+  height:     385px;
+  overflow-y: auto;
+};
 body {
   font-family:  'Myriad Pro';
   font-size:    14px;
@@ -7,9 +14,28 @@ body {
   padding:      2px 10px;
 };
 div[class*='col'] {
-  vertical-align: bottom;
+  vertical-align: middle;
 };
+.menu-toolbar {
+  position:      fixed;
+  bottom:        0;
+  margin-bottom: 0;
+  padding:       0;
 
-.inline-menu a:first-child {
-  margin-left: 0;
+  background:    #ffffff;
+  font-size:     1.5em;
+  width:         245px;
+  span:extend(.segment) {
+    &.active {
+      background: #3b83c0;
+      color:      #ffffff;
+    };
+  };
+};
+.notifications-list {
+  margin-bottom: 1.5em;
+  .divider {
+    margin:  0;
+    padding: 0;
+  };
 };

@@ -15,7 +15,7 @@ module.exports = function(grunt) {
                   src: ['ext/popups/popup.jade']
                 , dependencies: true
                 , devDependencies: false
-                , exclude: ['cryptojslib', 'jquery']
+                , exclude: ['cryptojslib']
                 , overrides: {
                     'font-awesome': { main: ['css/font-awesome.min.css'] }
                 }

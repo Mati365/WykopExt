@@ -15,26 +15,43 @@ module Ext.Background {
      * Gdy jest parzyste pokazuje powiadomienia z wykopaliska
      * a gdy nie pokazuje hashtagi o ile są
      */
-    let odd = false;
-    function updateBadge() {
+    let notifyCount = 0
+      , tagsCount = 0;
+    function updateBadge(tags: boolean = false) {
+        if(!user)
+            return;
+
+        /** Pobieranie */
+        chrome.browserAction.setBadgeBackgroundColor({
+            color: '#FF0000'
+        });
         user
-            .Notifications[(odd = !odd) ? 'getTagsCount' : 'getCount']()
+            .Notifications[tags ? 'getTagsCount' : 'getCount']()
             .done(data => {
-                if(!data.count)
-                    return;
+                if(tags)
+                    tagsCount = data.count;
+                else
+                    notifyCount = data.count;
+
+                /** Aktualizacja badge */
                 chrome.browserAction.setBadgeText({
-                    text: !data.count && !odd
-                        ? ''
-                        : ((odd ? '#' : '') + (data.count > 10 ? '10+' : data.count))
+                    text:     (notifyCount ? notifyCount : '')
+                            + (tagsCount ? ' #' + (tagsCount > 99 ? '99+' : tagsCount) : '')
                 });
-                chrome.browserAction.setBadgeBackgroundColor({
-                    color: odd ? '#FF0000' : '#0000FF'
-                });
+
+                /** Pokazywanie komentarzu tylko do wpisu */
+                if(!tags && data.count > notifyCount)
+                    chrome.notifications.create('WykopExt - powiadomienie', <chrome.notifications.NotificationOptions> {
+                          type: 'basic'
+                        , title: 'Powiadomienia'
+                        , message: 'Masz nieprzeczytanie powiadomienia!'
+                    }, null);
             });
     }
-    setInterval(() => {
-        user && updateBadge();
-    }, 11000);
+
+    /** Tagi są mniej ważne */
+    setInterval(updateBadge.bind(window, false), 22000);
+    setInterval(updateBadge.bind(window, true), 60000);
 
     /** Ładowanie klienta z zasobów */
     function loadCachedClient(): WAPI.User {
@@ -56,4 +73,5 @@ module Ext.Background {
         (<any>_(storage)).extendOwn(data);
         return user = loadCachedClient();
     }
+    export let logout = localStorage.clear.bind(localStorage);
 }

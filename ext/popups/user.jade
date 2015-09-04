@@ -1,10 +1,19 @@
-.row.inline-menu
-    a.segment(href='') Powiadomienia
-    a.segment(href='#/user/dupa') Mikroblog
-    a.segment(href='') Wykop
+.row.menu-toolbar
+    span.active( role='button'
+               , ng-class='{ active: showTags }'
+               , ng-click='fn.setCategory(false)'
+               ) #[i.fa.fa-fw.fa-envelope-o]
 
-.row(app-view-segment='1')
-.row
-    | {{ userInfo.login + ' #' + userInfo.rank + '' }}
-    .pull-right
-        a(href='#/login') Wyloguj się
+    span.active( role='button'
+               , ng-class='{ active: showTags }'
+               , ng-click='fn.setCategory(true)'
+               ) #[i.fa.fa-fw.fa-rss]
+    span.pull-right(role='button') #[i.fa.fa-fw.fa-sign-out]
+
+.notifications-list
+    .text-smallest.row(ng-repeat='msg in notifications')
+        .col20
+            img.header(ng-src='{{ msg.author_avatar }}')
+        .col80
+            a(ng-href='{{ msg.url }}', ng-class='{ active: msg.new }') {{ msg.body }}
+        .divider.vertical

@@ -83,12 +83,12 @@ module Ext.WAPI {
             });
             return $.ajax(<JQueryAjaxSettings> {
                   url: url
-                , method: post ? 'POST' : 'GET'
+                , method: post && !_(post).isEmpty() ? 'POST' : 'GET'
                 , data: post
                 , async: async
                 , headers: {
                       'apisign': CryptoJS.MD5(this.apiSecret + url + sortedPost.toString())
-                    , 'User-Agent': this.userAgent
+                    //, 'User-Agent': this.userAgent
                 }
             });
         }
