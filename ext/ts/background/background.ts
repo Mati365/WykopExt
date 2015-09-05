@@ -1,5 +1,6 @@
 ///<reference path="../../defs/chrome/chrome.d.ts"/>
 ///<reference path="wapi.ts"/>
+///<reference path="parser.ts"/>
 
 module Ext.Background {
     /**
@@ -7,7 +8,8 @@ module Ext.Background {
      * Może potem przeniesie się to na chrome.storage.local
      */
     let storage: LoginData = <LoginData> localStorage;
-    export let user: WAPI.User = loadCachedClient();
+    let intervals: { [index: string]: number } = {};
+    export let user: CoreAppUser = loadCachedClient();
 
     /**
      * Liczenie powiadomień, w zależności od
@@ -15,32 +17,33 @@ module Ext.Background {
      * Gdy jest parzyste pokazuje powiadomienia z wykopaliska
      * a gdy nie pokazuje hashtagi o ile są
      */
-    let notifyCount = 0
-      , tagsCount = 0;
+    export let notifyCount = 0
+             , tagsCount   = 0;
     function updateBadge(tags: boolean = false) {
-        if(!user)
-            return;
-
         /** Pobieranie */
-        chrome.browserAction.setBadgeBackgroundColor({
-            color: '#FF0000'
-        });
         user
             .Notifications[tags ? 'getTagsCount' : 'getCount']()
             .done(data => {
+                let count = parseInt(data.count || data);
                 if(tags)
-                    tagsCount = data.count;
+                    tagsCount = count;
                 else
-                    notifyCount = data.count;
+                    notifyCount = count;
 
                 /** Aktualizacja badge */
+                let text = (notifyCount ? notifyCount : '')
+                         + (tagsCount ? ' #' + (tagsCount > 9 ? '9+' : tagsCount) : '');
                 chrome.browserAction.setBadgeText({
-                    text:     (notifyCount ? notifyCount : '')
-                            + (tagsCount ? ' #' + (tagsCount > 99 ? '99+' : tagsCount) : '')
+                    text: text.trim()
+                });
+
+                /** Kolor */
+                chrome.browserAction.setBadgeBackgroundColor({
+                    color: !notifyCount ? '#0000FF' : '#FF0000'
                 });
 
                 /** Pokazywanie komentarzu tylko do wpisu */
-                if(!tags && data.count > notifyCount)
+                if(!tags && count > notifyCount)
                     chrome.notifications.create('WykopExt - powiadomienie', <chrome.notifications.NotificationOptions> {
                           type: 'basic'
                         , title: 'Powiadomienia'
@@ -49,17 +52,45 @@ module Ext.Background {
             });
     }
 
-    /** Tagi są mniej ważne */
-    setInterval(updateBadge.bind(window, false), 22000);
-    setInterval(updateBadge.bind(window, true), 60000);
+    /** Zarządzanie intervalami */
+    export function initInterval(id: string, func: () => void, delay: number) {
+        intervals[id] && clearInterval(intervals[id]);
+        intervals[id] = setInterval(func, delay);
+    }
+    function stopIntervals() {
+        _(intervals).each(<any> clearInterval);
+    }
 
-    /** Ładowanie klienta z zasobów */
-    function loadCachedClient(): WAPI.User {
-        let client = new WAPI.Client(
-              storage.apiKey
-            , storage.apiSecret
-        );
-        return client.login(storage.userLogin, storage.userKey);
+    /**
+     * Ładowanie użytkownika z zasobów, w zależności od
+     * trybu aplikacji wczytuje określone meody
+     */
+    function loadCachedClient(): CoreAppUser {
+        let user: CoreAppUser = null;
+        if(<any> storage.apiMode === 'false')
+            user = new Parser.User();
+        else {
+            let client = new WAPI.Client(
+                  storage.apiKey
+                , storage.apiSecret
+            );
+            user = client.login(storage.userLogin, storage.userKey);
+        }
+        if(user) {
+            stopIntervals();
+            initInterval('notify', updateBadge.bind(window, false), storage.apiMode ? 6000 : 22000);
+            initInterval('tags', updateBadge.bind(window, true), storage.apiMode ? 10000 : 60000);
+        }
+        return user;
+    }
+
+    /**
+     * Ustawianie trybu API, wymagane zalogowanie respektowanie ilości
+     * @param {boolean} apiMode Tryb API pobiera wszystko z serwera API
+     */
+    export function setApiMode(apiMode: boolean = false) {
+        storage.apiMode = apiMode;
+        return apiMode && loadCachedClient();
     }
 
     /**
@@ -73,5 +104,11 @@ module Ext.Background {
         (<any>_(storage)).extendOwn(data);
         return user = loadCachedClient();
     }
-    export let logout = localStorage.clear.bind(localStorage);
+
+    /** Wylogowywanie się */
+    export function logout() {
+        stopIntervals();
+        storage.clear.bind(storage);
+        user = null;
+    }
 }

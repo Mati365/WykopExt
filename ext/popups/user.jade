@@ -1,19 +1,23 @@
 .row.menu-toolbar
-    span.active( role='button'
-               , ng-class='{ active: !showTags }'
-               , ng-click='fn.setCategory(false)'
-               ) #[i.fa.fa-fw.fa-envelope-o]
+    span( role='button'
+        , ng-class='{ "active": !showTags }'
+        , ng-click='fn.setCategory(false)'
+        ) #[i.fa.fa-fw.fa-envelope-o]
+    span( role='button'
+        , ng-class='{ "active": showTags }'
+        , ng-click='fn.setCategory(true)'
+        ) #[i.fa.fa-fw.fa-rss]
+    span.pull-right( role='button'
+                   , ng-click='fn.logout()'
+                   ) #[i.fa.fa-fw.fa-sign-out]
 
-    span.active( role='button'
-               , ng-class='{ active: showTags }'
-               , ng-click='fn.setCategory(true)'
-               ) #[i.fa.fa-fw.fa-rss]
-    span.pull-right(role='button') #[i.fa.fa-fw.fa-sign-out]
+.loading-screen(ng-hide='notifications.length')
+    img(src='../../resources/loading.gif')
 
-.notifications-list
+.notifications-list(ng-show='notifications.length')
     .text-smallest.row(ng-repeat='msg in notifications')
         .col20
             img.header(ng-src='{{ msg.author_avatar }}')
         .col80
-            a(ng-href='{{ msg.url }}', ng-class='{ active: msg.new }') {{ msg.body }}
+            a(ext-href='{{ msg.url }}', ng-class='{ "active": msg.new }', ng-bind-html='msg.body | trusted')
         .divider.vertical

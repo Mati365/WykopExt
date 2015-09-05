@@ -4,9 +4,6 @@
 
 module Ext.UI {
     interface IUserScope extends CtrlScope<UserCtrl> {
-        userInfo: WAPI.UserInfo;
-
-        /** Powiadomienia */
         showTags: boolean;
         notifications: any[];
     }
@@ -17,20 +14,27 @@ module Ext.UI {
             , private background: Background
         ) {
             super($scope, {
-                  userInfo: background.user.info
-                , notifications: []
+                  notifications: []
                 , tagsNotifications: []
-                , showTags: false
             });
-            this.loadNotifications();
+            this.setCategory(
+                <any> !background.api.notifyCount && <any> background.api.tagsCount
+            );
         }
 
         /** Pobieranie powiadomień */
         private loadNotifications() {
-            this.background[this.$scope.showTags
-                        ? 'getTagsNotifications'
-                        : 'getNotifications'
-                    ]().done(data => {
+            /** w background jest asynchronicznie i może się nie zalogować */
+            if(!this.background.api.user) {
+                setTimeout(this.loadNotifications.bind(this), 500);
+                return;
+            }
+            this.$scope.notifications = [];
+            this.background.api.user.Notifications
+                        [this.$scope.showTags
+                            ? 'getTagsList'
+                            : 'getList'
+                        ]().done(data => {
                 this.$scope.notifications = data;
                 this.$scope.$digest();
             });
@@ -48,8 +52,14 @@ module Ext.UI {
         /** Wylogowywanie się */
         public logout() {
             this.$location.path('/login');
-            this.background.logout();
+            this.background.api.logout();
         }
     }
-    mod.controller('UserCtrl', UserCtrl)
+    mod
+        .controller('UserCtrl', UserCtrl)
+        .filter('trusted', function($sce){
+            return text => {
+                return $sce.trustAsHtml(JSON.parse('"' + text + '"'));
+            };
+        });
 }

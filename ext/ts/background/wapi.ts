@@ -13,13 +13,6 @@
 ///<reference path="../shared.ts"/>
 
 module Ext.WAPI {
-    /** Format z python'a */
-    String.prototype['format'] = function(...params: any[]): string {
-        return this.replace(/\{(\w*)\}/g, (match, val) => {
-            return isNaN(val) ? params[0][val] : params[val];
-        });
-    };
-
     /**
      * Aseracja, rzucanie wyjątkiem jeśli nie jest spełnione
      * @param {any}     condition Warunek
@@ -137,7 +130,7 @@ module Ext.WAPI {
     }
 
     /** Użytkownik wykopu */
-    export class User {
+    export class User implements CoreAppUser {
         constructor(
               private client: Client
             , public userKey: string

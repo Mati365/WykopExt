@@ -6,6 +6,7 @@ module Ext.UI {
     interface LoginScope extends CtrlScope<LoginCtrl> {
         data: LoginData;
         error: string;
+        apiMode: boolean; // apiMode nie potrzebuje danych usera
     }
     export class LoginCtrl extends Controller {
         constructor(
@@ -13,12 +14,15 @@ module Ext.UI {
             , private $location: ng.ILocationService
             , private background: Background
         ) {
-            super($scope);
+            super($scope, {
+                apiMode: false
+            });
         }
 
         /** Logowanie się do background */
         public login() {
-            if(this.background.login(this.$scope.data))
+            if(!this.background.api.setApiMode(this.$scope.apiMode)
+                    || this.background.api.login(this.$scope.data))
                 this.$location.path('/user');
             else
                 this.$scope.error = 'Błędne dane logowania :(';

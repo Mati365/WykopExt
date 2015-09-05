@@ -1,16 +1,30 @@
-/**
- * Created by mateusz on 30.08.15.
- * Kod współdzielony przez popup
- */
 ///<reference path="../defs/jquery/jquery.d.ts"/>
 
 module Ext {
+    /** Format z python'a */
+    String.prototype['format'] = function(...params: any[]): string {
+        return this.replace(/\{(\w*)\}/g, (match, val) => {
+            return isNaN(val) ? params[0][val] : params[val];
+        });
+    };
+
     /** Dane logowania */
     export interface LoginData extends Storage {
+        apiMode: boolean;
         apiKey: string;
         apiSecret: string;
         userLogin: string;
         userKey: string;
+    }
+
+    /** Podstawowy użytkownik Appki, tylko potrzebne metody */
+    export interface CoreAppUser {
+        Notifications: {
+            getCount();
+            getList();
+            getTagsCount();
+            getTagsList();
+        }
     }
 
     /** Interfejsy WAPI */

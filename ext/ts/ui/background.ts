@@ -2,37 +2,44 @@
 ///<reference path="popup.ts"/>
 
 module Ext {
-    /** Użytkownik API */
-    export interface User {
-        userKey: string;
-        info: WAPI.UserInfo;
-        Notifications: {
-            getList();
-            getTagsList();
-        };
-    }
-
-    /** Metody API */
+    /** Metody background */
     export interface ExtAPI {
-        user: User;
+        user: CoreAppUser;
+        notifyCount: number;
+        tagsCount: number;
+
+        setApiMode(apiMode: boolean);
         login(data: LoginData);
         logout();
     }
     export module UI {
+        /** Serwis zasobów */
         export class Background {
-            private api: ExtAPI = (<any> chrome.extension.getBackgroundPage()).Ext.Background;
+            private background: ExtAPI = (<any> chrome.extension.getBackgroundPage()).Ext.Background;
 
             /** Metody skryptu background */
-            public get user(): User { return this.api.user; }
-            public login = this.api.login;
-            public logout = this.api.logout;
+            public get user(): CoreAppUser { return this.background.user; }
+            public get api(): ExtAPI { return this.background; }
+        }
 
-            /** Pobieranie powiadomień */
-            public getNotifications()     { return this.api.user.Notifications.getList(); }
-            public getTagsNotifications() { return this.api.user.Notifications.getTagsList(); }
+        /** Otwieranie nowych linków w nowych zakładkach */
+        export class ExtHref implements ng.IDirective {
+            public restrict: string = 'A';
+            public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
+                $(element)
+                    .attr('href', attrs.extHref)
+                    .click(() => {
+                        chrome.tabs.create({ url: attrs.extHref });
+                    });
+            };
+
+            static factory(): ng.IDirectiveFactory {
+                return () => new ExtHref;
+            }
         }
         mod
             .service('background', Background)
+            .directive('extHref', ExtHref.factory())
             .run(($location: ng.ILocationService, background: Background) => {
                 $location.path(background.user ? '/user' : '/login');
             })

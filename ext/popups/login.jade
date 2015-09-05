@@ -8,22 +8,34 @@ mixin formField(icon, type, placeholder, model)
     .col100
         img.header(src='../../resources/banner.png')
 
-.header-title
-    strong Dane użytkownika:
+strong.header-title Wybierz tryb działania aplikacji:
 .row
-    .col100 #[+formField('user', 'text', 'login', 'data.userLogin')]
-    .col100 #[+formField('key', 'text', 'klucz konta', 'data.userKey')]
+    .col100
+        input(type='radio', ng-model='apiMode', ng-value='false')
+        span Przez parsowanie strony(większe zużycie danych, większe obciążenie, nie trzeba się logować)
 
-.header-title
-    strong Dane API:
+    .col100
+        input(type='radio', ng-model='apiMode', ng-value='true')
+        span Przez API(mniejsze zużycie danych, wolniejsza aktualizacja, wymagane logowanie)
+
+// Tryb API
+.api-mode(ng-show='apiMode')
+    .row
+        .col100(ng-show='error')
+            .message.danger
+                i.fa.fa-exclamation-triangle.fa-lg
+                | {{ error }}
+    strong.header-title Dane użytkownika:
+    .row
+        .col100 #[+formField('user', 'text', 'login', 'data.userLogin')]
+        .col100 #[+formField('key', 'text', 'klucz konta', 'data.userKey')]
+
+    strong.header-title Dane API:
+    .row
+        .col100 #[+formField('key', 'text', 'klucz aplikacji', 'data.apiKey')]
+        .col100 #[+formField('key', 'text', 'prywatny klucz aplikacji', 'data.apiSecret')]
+
 .row
-    .col100 #[+formField('key', 'text', 'klucz aplikacji', 'data.apiKey')]
-    .col100 #[+formField('key', 'text', 'prywatny klucz aplikacji', 'data.apiSecret')]
-.row
-    .col100(ng-show='error')
-        .message.danger
-            i.fa.fa-exclamation-triangle.fa-lg
-            | {{ error }}
     .col50
         button.blue(ng-click='fn.login()') Zaloguj się
     .col50
