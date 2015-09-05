@@ -30,7 +30,7 @@ module Ext.Parser {
             this.parseSource(html => {
                 $.ajax({
                       type: 'GET'
-                    , url: $(html).find(tag).attr('data-ajaxurl') + '/hash/ddbb6110f40efd96e876ac3171584512-1441452230?_=1441452231296'
+                    , url: $(html).find(tag).attr('data-ajaxurl') + '/hash/' + html.match(/hash.*:."(.*)",/)[1]
                     , xhrFields: {
                         withCredentials: true
                     }
