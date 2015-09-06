@@ -22,13 +22,13 @@ module Ext.Parser {
             , expDate: 0
         };
         private parseSource(parser: (html: string) => any) {
-            if(this.cache.html.length && new Date().getMilliseconds() < this.cache.expDate)
+            if(this.cache.html.length && new Date().getTime() < this.cache.expDate)
                 return parser(this.cache.html);
             return $.get(this.wykopURL).then(html => {
                 this.cache = {
                       html: html
                     , hash: html.match(/hash.*:."(.*)",/)[1]
-                    , expDate: new Date().getMilliseconds() + 600000
+                    , expDate: new Date().getTime() + 600000
                 };
                 return parser(html);
             });
