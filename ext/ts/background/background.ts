@@ -89,8 +89,9 @@ module Ext.Background {
      * @param {boolean} apiMode Tryb API pobiera wszystko z serwera API
      */
     export function setApiMode(apiMode: boolean = false) {
-        storage.apiMode = apiMode;
-        return apiMode && loadCachedClient();
+        return !(storage.apiMode = apiMode)
+                ? false
+                : (user = loadCachedClient());
     }
 
     /**
@@ -107,8 +108,10 @@ module Ext.Background {
 
     /** Wylogowywanie się */
     export function logout() {
-        stopIntervals();
-        storage.clear.bind(storage);
+        storage.clear();
         user = null;
+        chrome.browserAction.setBadgeText({
+            text: ''
+        });
     }
 }

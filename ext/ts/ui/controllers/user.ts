@@ -25,12 +25,12 @@ module Ext.UI {
         /** Pobieranie powiadomień */
         private loadNotifications() {
             /** w background jest asynchronicznie i może się nie zalogować */
-            if(!this.background.api.user) {
+            if(!this.background.user) {
                 setTimeout(this.loadNotifications.bind(this), 500);
                 return;
             }
             this.$scope.notifications = [];
-            this.background.api.user.Notifications
+            this.background.user.Notifications
                         [this.$scope.showTags
                             ? 'getTagsList'
                             : 'getList'
@@ -55,11 +55,43 @@ module Ext.UI {
             this.background.api.logout();
         }
     }
+
+
+    /** Otwieranie nowych linków w nowych zakładkach */
+    export class ExtHref implements ng.IDirective {
+        public restrict: string = 'A';
+        public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
+            $(element)
+                .attr('href', attrs.extHref)
+                .click(() => {
+                    chrome.tabs.create({ url: attrs.extHref });
+                });
+        };
+
+        static factory(): ng.IDirectiveFactory { return () => new ExtHref; }
+    }
+
+    /** Wyświetlanie innego obrazu w razie błędu */
+    export class ErrSrc implements ng.IDirective {
+        public restrict: string = 'A';
+        public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
+            element.bind('error', () => {
+                attrs.src != attrs.errSrc && attrs.$set('src', attrs.errSrc);
+            });
+        };
+
+        static factory(): ng.IDirectiveFactory { return () => new ErrSrc; }
+    }
     mod
         .controller('UserCtrl', UserCtrl)
+        .directive('extHref', ExtHref.factory())
+        .directive('errSrc', ErrSrc.factory())
         .filter('trusted', function($sce){
             return text => {
-                return $sce.trustAsHtml(JSON.parse('"' + text + '"'));
+                try {
+                    text = JSON.parse('"' + text + '"')
+                } catch(err) {}
+                return $sce.trustAsHtml(text);
             };
         });
 }

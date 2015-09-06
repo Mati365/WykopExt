@@ -21,7 +21,7 @@ module Ext.UI {
 
         /** Logowanie się do background */
         public login() {
-            if(!this.background.api.setApiMode(this.$scope.apiMode)
+            if(this.background.api.setApiMode(this.$scope.apiMode)
                     || this.background.api.login(this.$scope.data))
                 this.$location.path('/user');
             else

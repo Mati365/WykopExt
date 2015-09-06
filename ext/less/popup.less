@@ -2,7 +2,7 @@
   display: none;
 }
 html, body {
-  max-height: 385px;
+  min-height: 256px;
   overflow-y: auto;
 };
 body {
@@ -20,16 +20,14 @@ body {
   margin:   0;
 
   background:    #ffffff;
-  font-size:     1.5em;
+  font-size:     1.4em;
   width:         245px;
+  height:        20px;
   span:extend(.segment) {
     &.active { color: #000000; };
-    color:     #ebebeb;
+    color:          #ebebeb;
   };
-  img {
-    height: 1.5em;
-    width:  auto;
-  }
+  a:hover { color: black; };
 };
 .notifications-list {
   margin-bottom: 1.5em;
@@ -41,6 +39,15 @@ body {
     height:     auto;
     max-height: 38px;
   };
+  div[class*='col'] {
+    margin-bottom: 0;
+  };
+  .row .col80 {
+    word-break: break-all;
+  };
+  > div:last-of-type:not(:first-of-type) .divider.vertical {
+    border: 0;
+  };
 };
 .loading-screen {
   height:   200px;
@@ -50,6 +57,6 @@ body {
     position:  absolute;
     left:      50%;
     top:       50%;
-    transform: translate(-50%, -50%);;
+    transform: translate(-50%, -50%);
   };
 };

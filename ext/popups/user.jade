@@ -7,9 +7,14 @@
         , ng-class='{ "active": showTags }'
         , ng-click='fn.setCategory(true)'
         ) #[i.fa.fa-fw.fa-rss]
-    span.pull-right( role='button'
-                   , ng-click='fn.logout()'
-                   ) #[i.fa.fa-fw.fa-sign-out]
+
+    span.pull-right
+        span.segment
+            a(ext-href='http://www.wykop.pl/moj/#wykopext') #[i.fa.fa-fw.fa-users]
+            a(ext-href='http://github.com/Mati365/WykopExt') #[i.fa.fa-fw.fa-github]
+        span.segment( role='button'
+            , ng-click='fn.logout()'
+            ) #[i.fa.fa-fw.fa-sign-out]
 
 .loading-screen(ng-hide='notifications.length')
     img(src='../../resources/loading.gif')
@@ -17,7 +22,12 @@
 .notifications-list(ng-show='notifications.length')
     .text-smallest.row(ng-repeat='msg in notifications')
         .col20
-            img.header(ng-src='{{ msg.author_avatar }}')
+            img.header( ng-src='{{ msg.author_avatar }}'
+                      , ng-err='http://xd.cdn02.imgwykop.pl/c3397992/avatar_def,q150.png'
+                      )
         .col80
-            a(ext-href='{{ msg.url }}', ng-class='{ "active": msg.new }', ng-bind-html='msg.body | trusted')
+            a( ext-href='{{ msg.url }}'
+             , ng-class='{ "active": msg.new }'
+             , ng-bind-html='msg.body | trusted'
+             )
         .divider.vertical

@@ -38,7 +38,7 @@ module Ext.Parser {
                     let html = d.responseText.match(/"data":{"html":"(.*)"}}/)[1];
                     html = html
                         .replace(/\\r|\\n|\\t/g, '')
-                        .replace(/\\"|\/f/g, '"')
+                        .replace(/\\"/g, '"')
                         .replace(/\\\//g, '/');
                     defer.resolve($(html).find('p'));
                 });
