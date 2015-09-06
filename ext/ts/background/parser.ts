@@ -2,9 +2,12 @@
 ///<reference path="../shared.ts"/>
 
 module Ext.Parser {
+    interface UserCache {
+        html: string;
+        expDate: number;
+    }
     export class User implements CoreAppUser {
         private wykopURL: string = 'http://www.wykop.pl/';
-        private cache: string = '';
 
         /**
          * Parsowanie strony wykopu
@@ -12,12 +15,20 @@ module Ext.Parser {
          * @param {boolean}  useCache Używanie cache strony głównej
          * @returns {JQueryPromise<any>}
          */
-        private parseSource(parser: (html: string) => any, useCache: boolean = true) {
-            if(useCache && this.cache.length)
-                return $.Deferred().then(() => {
-                    return parser(this.cache);
-                });
-            return $.get(this.wykopURL).then(parser);
+        private cache: UserCache = {
+              html: ''
+            , expDate: 0
+        };
+        private parseSource(parser: (html: string) => any) {
+            if(this.cache.html.length && new Date().getMilliseconds() < this.cache.expDate)
+                return parser(this.cache.html);
+            return $.get(this.wykopURL).then(html => {
+                this.cache = {
+                      html: html
+                    , expDate: new Date().getMilliseconds() + 600000
+                };
+                return parser(html);
+            });
         }
 
         /**
@@ -42,7 +53,7 @@ module Ext.Parser {
                         .replace(/\\\//g, '/');
                     defer.resolve($(html).find('p'));
                 });
-            }, true);
+            });
             return defer;
         }
 
