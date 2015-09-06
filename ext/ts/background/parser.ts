@@ -4,6 +4,7 @@
 module Ext.Parser {
     interface UserCache {
         html: string;
+        hash: string;
         expDate: number;
     }
     export class User implements CoreAppUser {
@@ -17,6 +18,7 @@ module Ext.Parser {
          */
         private cache: UserCache = {
               html: ''
+            , hash: ''
             , expDate: 0
         };
         private parseSource(parser: (html: string) => any) {
@@ -25,9 +27,38 @@ module Ext.Parser {
             return $.get(this.wykopURL).then(html => {
                 this.cache = {
                       html: html
+                    , hash: html.match(/hash.*:."(.*)",/)[1]
                     , expDate: new Date().getMilliseconds() + 600000
                 };
                 return parser(html);
+            });
+        }
+
+        /**
+         * Tworzenie requestu do Wykopu
+         * @param {string} link Link
+         */
+        private makeAjax2Request(link: string) {
+            let defer = $.Deferred();
+            $.ajax({
+                  type: 'GET'
+                , url: link + '/hash/' + this.cache.hash
+                , xhrFields: {
+                    withCredentials: true
+                }
+            }).fail(d => {
+                defer.resolve(d.responseText);
+            });
+            return defer;
+        }
+
+        /** Pobieranie ilości powiadomień */
+        private getNotificationsCount() {
+            return this.parseSource(() => {
+                return this.makeAjax2Request('http://www.wykop.pl/ajax2/powiadomienia/mine').then((d: string) => {
+                    let notify = d.match(/"count":(\d*),"hcount":(\d*)/);
+                    return [ notify[1], notify[2] ];
+                });
             });
         }
 
@@ -36,25 +67,34 @@ module Ext.Parser {
          * @param {string} tag Ścieżka do CSS przycisku
          * @returns {JQueryDeferred<T>}
          */
-        private getSource(tag: string): JQueryDeferred<any> {
-            let defer = $.Deferred();
-            this.parseSource(html => {
-                $.ajax({
-                      type: 'GET'
-                    , url: $(html).find(tag).attr('data-ajaxurl') + '/hash/' + html.match(/hash.*:."(.*)",/)[1]
-                    , xhrFields: {
-                        withCredentials: true
-                    }
-                }).fail(d => {
-                    let html = d.responseText.match(/"data":{"html":"(.*)"}}/)[1];
+        private getSource(tag: string) {
+            //let defer = $.Deferred();
+            //this.parseSource(html => {
+            //    $.ajax({
+            //          type: 'GET'
+            //        , url: $(html).find(tag).attr('data-ajaxurl') + '/hash/' + this.cache.hash
+            //        , xhrFields: {
+            //            withCredentials: true
+            //        }
+            //    }).fail(d => {
+            //        let html = d.responseText.match(/"data":{"html":"(.*)"}}/)[1];
+            //        html = html
+            //            .replace(/\\r|\\n|\\t/g, '')
+            //            .replace(/\\"/g, '"')
+            //            .replace(/\\\//g, '/');
+            //        defer.resolve($(html).find('p'));
+            //    });
+            //});
+            return this.parseSource(html => {
+                return this.makeAjax2Request($(html).find(tag).attr('data-ajaxurl')).then((d: string) => {
+                    let html = d.match(/"data":{"html":"(.*)"}}/)[1];
                     html = html
                         .replace(/\\r|\\n|\\t/g, '')
                         .replace(/\\"/g, '"')
                         .replace(/\\\//g, '/');
-                    defer.resolve($(html).find('p'));
+                    return $(html).find('p');
                 });
             });
-            return defer;
         }
 
         /**
@@ -83,13 +123,13 @@ module Ext.Parser {
         /** Metody API */
         public Notifications = {
               getCount: () => {
-                return this.parseSource(html => {
-                    return $(html).find('li.notification.m-user b').text();
+                return this.getNotificationsCount().then(data => {
+                    return data[0];
                 });
             }
             , getTagsCount: () => {
-                return this.parseSource(html => {
-                    return $(html).find('li.notification.m-tag b').text();
+                return this.getNotificationsCount().then(data => {
+                    return data[1];
                 });
             }
             , getList:     () => { return this.parseList('li.notification.m-user a'); }
