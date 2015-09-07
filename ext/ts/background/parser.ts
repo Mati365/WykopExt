@@ -28,7 +28,7 @@ module Ext.Parser {
                 this.cache = {
                       html: html
                     , hash: html.match(/hash.*:."(.*)",/)[1]
-                    , expDate: new Date().getTime() + 600000
+                    , expDate: new Date().getTime() + 6000000
                 };
                 return parser(html);
             });
@@ -40,7 +40,7 @@ module Ext.Parser {
          */
         private makeAjax2Request(link: string) {
             let defer = $.Deferred();
-            $.ajax({
+            $.ajax(<JQueryAjaxSettings> {
                   type: 'GET'
                 , url: link + '/hash/' + this.cache.hash
                 , xhrFields: {

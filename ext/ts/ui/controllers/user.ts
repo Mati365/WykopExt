@@ -82,15 +82,32 @@ module Ext.UI {
 
         static factory(): ng.IDirectiveFactory { return () => new ErrSrc; }
     }
+
+    /** Tryb nightmode */
+    export class NightMode implements ng.IDirective {
+        public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
+            new Date().getHours() >= 20 && element.addClass('night-mode');
+        };
+
+        static factory(): ng.IDirectiveFactory { return () => new NightMode(); }
+    }
+
     mod
         .controller('UserCtrl', UserCtrl)
         .directive('extHref', ExtHref.factory())
         .directive('errSrc', ErrSrc.factory())
+        .directive('nightMode', NightMode.factory())
         .filter('trusted', function($sce){
             return text => {
-                try {
-                    text = JSON.parse('"' + text + '"')
-                } catch(err) {}
+                text = text.replace(/\\u([\d\w]{4})/gi, (match, grp) => {
+                    return String.fromCharCode(parseInt(grp, 16));
+                });
+                //try {
+                //    text = JSON.parse('"' + text + '"');
+                //    console.log(text);
+                //} catch(err) {
+                //    console.error(err);
+                //}
                 return $sce.trustAsHtml(text);
             };
         });

@@ -22,7 +22,7 @@ body {
   background:    #ffffff;
   font-size:     1.4em;
   width:         245px;
-  height:        20px;
+  height:        21px;
   span:extend(.segment) {
     &.active { color: #000000; };
     color:          #ebebeb;
@@ -59,4 +59,18 @@ body {
     top:       50%;
     transform: translate(-50%, -50%);
   };
+};
+.night-mode {
+  color: #999999;
+  &, .menu-toolbar, .notifications-list {
+    background: #1c1c1c;
+  };
+  .menu-toolbar {
+    span:extend(.segment) {
+      &.active { color: #ff5917; };
+      color: #2c2c2c;
+    };
+  };
+  .divider { border: 0; };
+  .row:not(.menu-toolbar) { background: #2c2c2c; };
 };
