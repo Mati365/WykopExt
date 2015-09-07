@@ -4,6 +4,7 @@ A simple Google Chrome extension that show notifications from Wykop.pl
 ## Screenshots
 ![Screenshoot](/screenshots/1.png?raw=true "Screen")
 ![Screenshoot](/screenshots/3.png?raw=true "Screen")
+![Screenshoot](/screenshots/4.png?raw=true "Screen")
 ![Screenshoot](/screenshots/2.png?raw=true "Screen")
 
 ## License
