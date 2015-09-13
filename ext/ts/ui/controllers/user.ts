@@ -17,26 +17,30 @@ module Ext.UI {
                   notifications: []
                 , tagsNotifications: []
             });
-            this.setCategory(
-                <any> !background.api.notifyCount && <any> background.api.tagsCount
-            );
+            background.api.done((api: ExtAPI) => {
+                this.setCategory(
+                    <any> !api.notifyCount && <any> api.tagsCount
+                );
+            });
         }
 
         /** Pobieranie powiadomień */
         private loadNotifications() {
             /** w background jest asynchronicznie i może się nie zalogować */
-            if(!this.background.user) {
-                setTimeout(this.loadNotifications.bind(this), 500);
-                return;
-            }
+            //if(!this.background.user) {
+            //    setTimeout(this.loadNotifications.bind(this), 500);
+            //    return;
+            //}
             this.$scope.notifications = [];
-            this.background.user.Notifications
+            this.background.user.done((user: CoreAppUser) => {
+                user.Notifications
                         [this.$scope.showTags
-                            ? 'getTagsList'
-                            : 'getList'
+                        ? 'getTagsList'
+                        : 'getList'
                         ]().done(data => {
-                this.$scope.notifications = data;
-                this.$scope.$digest();
+                    this.$scope.notifications = data;
+                    this.$scope.$digest();
+                })
             });
         }
 
@@ -52,7 +56,9 @@ module Ext.UI {
         /** Wylogowywanie się */
         public logout() {
             this.$location.path('/login');
-            this.background.api.logout();
+            this.background.api.done((api: ExtAPI) => {
+                api.logout();
+            });
         }
     }
 
@@ -73,7 +79,6 @@ module Ext.UI {
 
     /** Wyświetlanie innego obrazu w razie błędu */
     export class ErrSrc implements ng.IDirective {
-        public restrict: string = 'A';
         public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
             element.bind('error', () => {
                 attrs.src != attrs.errSrc && attrs.$set('src', attrs.errSrc);
@@ -85,7 +90,7 @@ module Ext.UI {
 
     /** Tryb nightmode */
     export class NightMode implements ng.IDirective {
-        public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
+        public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery) => {
             new Date().getHours() >= 20 && element.addClass('night-mode');
         };
 
@@ -102,12 +107,6 @@ module Ext.UI {
                 text = text.replace(/\\u([\d\w]{4})/gi, (match, grp) => {
                     return String.fromCharCode(parseInt(grp, 16));
                 });
-                //try {
-                //    text = JSON.parse('"' + text + '"');
-                //    console.log(text);
-                //} catch(err) {
-                //    console.error(err);
-                //}
                 return $sce.trustAsHtml(text);
             };
         });

@@ -12,19 +12,31 @@ module Ext {
         login(data: LoginData);
         logout();
     }
+    export let extApiClient: ExtAPI = null;
+
     export module UI {
         /** Serwis zasobów */
         export class Background {
             /** Metody skryptu background */
-            public get user(): CoreAppUser { return this.api.user; }
-            public get api(): ExtAPI {
-                return (<any> chrome.extension.getBackgroundPage()).Ext.Background;
+            public get user() {
+                return this.api.then(data => {
+                    return data.user;
+                });
+            }
+            public get api(): JQueryPromise<ExtAPI> {
+                return $
+                    .Deferred()
+                    .resolve((<any> chrome.extension.getBackgroundPage()).Ext.Background)
+                    .promise();
             }
         }
         mod
             .service('background', Background)
-            .run(($location: ng.ILocationService, background: Background) => {
-                $location.path(background.user ? '/user' : '/login');
-            })
+            .run(($location: ng.ILocationService) => {
+                $location.path('/login');
+            });
+            //.run(($location: ng.ILocationService, background: Background) => {
+            //    $location.path(background.user ? '/user' : '/login');
+            //});
     }
 }

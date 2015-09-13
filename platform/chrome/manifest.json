@@ -7,15 +7,6 @@
       "default_icon": "resources/icon.png"
     , "default_popup": "popups/popup.html"
   }
-//  , "content_scripts": [{
-//        "matches": ["http://*/*", "https://*/*"]
-//      , "css": ["styles/styles.css"]
-//      , "js": [
-//            "bower_components/jquery/dist/jquery.min.js"
-//          , "content-scripts/recorder.js"
-//          , "content-scripts/player.js"
-//      ]
-//  }]
   , "icons": {
         "16": "resources/icon.png"
       , "48": "resources/icon.png"
@@ -31,7 +22,7 @@
       ]
   }
   , "web_accessible_resources": [
-      "popups/login.html"
+      "data/popups/login.html"
   ]
   , "permissions": [
         "<all_urls>"

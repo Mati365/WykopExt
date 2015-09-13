@@ -1,0 +1,12 @@
+{
+  "title": "WykopExt",
+  "name": "wykopext",
+  "version": "0.0.1",
+  "description": "A simple Google Chrome extension that show notifications from Wykop.pl",
+  "main": "index.js",
+  "author": "Mateusz Bagiński",
+  "engines": {
+    "firefox": ">=38.0a1"
+  },
+  "license": "MIT"
+}

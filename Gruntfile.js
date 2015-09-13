@@ -7,18 +7,18 @@ module.exports = function(grunt) {
                     , debounceDelay: 250
                 }
                 , files: ['ext/**/*', 'platform/<%= buildPlatform %>/**/*']
-                , tasks: ['jade', 'typescript:ui', 'typescript:background', 'less', 'copy']
+                , tasks: ['jade', 'typescript:ui', 'typescript:background', 'typescript:platform', 'less', 'copy']
             }
         }
         , copy: {
             main: {
                 files: [
-                    { src: ['**/*',  '!**/less/**',  '!**/ts/**']
+                    { src: ['**/*',  '!**/less/**',  '!**/ts/**', '!*.ts']
                     , expand: true
                     , cwd: 'platform/<%= buildPlatform %>/'
                     , dest: 'build/'
                     }
-                    , { expand: true, src: ['resources/**/*'], dest: 'build/'}
+                    , { expand: true, src: ['data/**/*'], dest: 'build/'}
                 ]
             }
         }
@@ -42,7 +42,7 @@ module.exports = function(grunt) {
                     , optimization: 2
                 }
                 , files: {
-                    'build/css/popup.css': 'ext/less/popup.less'
+                    'build/data/css/popup.css': 'ext/less/popup.less'
                 }
             }
         }
@@ -54,7 +54,7 @@ module.exports = function(grunt) {
                 , files: [{
                       cwd: 'ext/popups'
                     , src: '**/*.jade'
-                    , dest: 'build/popups'
+                    , dest: 'build/data/popups'
                     , expand: true
                     , ext: '.html'
                 }]
@@ -64,16 +64,17 @@ module.exports = function(grunt) {
               ui: {
                   src: ['ext/ts/ui/**/*.ts', 'platform/<%= buildPlatform %>/ui/**/*.ts']
                 , dest: 'build/js/popup.js'
-                , options: {
-                    target: 'es5'
-                }
+                , options: { target: 'es5' }
+            }
+            , platform: {
+                  src: ['platform/<%= buildPlatform %>/*.ts']
+                , dest: 'build/'
+                , options: { target: 'es5' }
             }
             , background: {
                   src: ['ext/ts/background/**/*.ts', 'platform/<%= buildPlatform %>/background/**/*.ts']
                 , dest: 'build/js/background.js'
-                , options: {
-                    target: 'es5'
-                }
+                , options: { target: 'es5' }
             }
         }
     });
@@ -82,5 +83,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
-    grunt.config('buildPlatform', 'chrome');
+    grunt.config('buildPlatform', 'firefox');
 };

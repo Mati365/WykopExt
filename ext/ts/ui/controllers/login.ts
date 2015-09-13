@@ -21,11 +21,12 @@ module Ext.UI {
 
         /** Logowanie się do background */
         public login() {
-            if(this.background.api.setApiMode(this.$scope.apiMode)
-                    || this.background.api.login(this.$scope.data))
-                this.$location.path('/user');
-            else
-                this.$scope.error = 'Błędne dane logowania :(';
+            this.background.api.done((api: ExtAPI) => {
+                if(api.setApiMode(this.$scope.apiMode) || api.login(this.$scope.data))
+                    this.$location.path('/user');
+                else
+                    this.$scope.error = 'Błędne dane logowania :(';
+            });
         }
     }
     mod.controller('LoginCtrl', LoginCtrl)

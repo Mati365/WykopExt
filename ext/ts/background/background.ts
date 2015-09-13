@@ -3,6 +3,14 @@
 ///<reference path="parser.ts"/>
 
 module Ext.Background {
+    export interface BrowserAPI {
+        Badge: {
+              setText: (text: string) => BrowserAPI
+            , setColor: (color: string) => BrowserAPI
+        }
+    }
+    export let browserApi: BrowserAPI = null;
+
     /**
      * BUG: TypeScript nie pozwala na nadpisanie lib.d.ts
      * Może potem przeniesie się to na chrome.storage.local
@@ -33,22 +41,19 @@ module Ext.Background {
                 /** Aktualizacja badge */
                 let text = (notifyCount ? notifyCount : '')
                          + (tagsCount ? ' #' + (tagsCount > 9 ? '9+' : tagsCount) : '');
-                chrome.browserAction.setBadgeText({
-                    text: text.trim()
-                });
+                if(browserApi) {
+                    browserApi
+                        .Badge.setText(text.trim())
+                        .Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000')
+                }
 
-                /** Kolor */
-                chrome.browserAction.setBadgeBackgroundColor({
-                    color: !notifyCount ? '#0000FF' : '#FF0000'
-                });
-
-                /** Pokazywanie komentarzu tylko do wpisu */
-                if(!tags && count > notifyCount)
-                    chrome.notifications.create('WykopExt - powiadomienie', <chrome.notifications.NotificationOptions> {
-                          type: 'basic'
-                        , title: 'Powiadomienia'
-                        , message: 'Masz nieprzeczytanie powiadomienia!'
-                    }, null);
+                ///** Pokazywanie komentarzu tylko do wpisu */
+                //if(!tags && count > notifyCount)
+                //    chrome.notifications.create('WykopExt - powiadomienie', <chrome.notifications.NotificationOptions> {
+                //          type: 'basic'
+                //        , title: 'Powiadomienia'
+                //        , message: 'Masz nieprzeczytanie powiadomienia!'
+                //    }, null);
             });
     }
 
