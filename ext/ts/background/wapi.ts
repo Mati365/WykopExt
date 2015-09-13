@@ -42,7 +42,6 @@ module Ext.WAPI {
          * @param {Params}  params Parametry
          */
         public static parseParams(params: Params) {
-            /** Sortowanie alfabetyczne */
             let keys = _(params).keys();
             return _(keys).reduce((memo, key, index) => {
                 return memo + key + ',' + params[key] + (index === keys.length - 1 ? '' : ',');

@@ -1,11 +1,11 @@
 {
     "manifest_version": 2
   , "name": "WykopExt"
-  , "description": "A simple Google Chrome extension that show notifications from Wykop.pl"
+  , "description": "A simple browser extension that shows notifications from wykop.pl"
   , "version": "0.0.1"
   , "browser_action": {
       "default_icon": "resources/icon.png"
-    , "default_popup": "build/popups/popup.html"
+    , "default_popup": "popups/popup.html"
   }
 //  , "content_scripts": [{
 //        "matches": ["http://*/*", "https://*/*"]
@@ -23,15 +23,15 @@
   }
   , "background": {
       "scripts": [
-          "build/bower_components/jquery/dist/jquery.min.js"
-        , "build/bower_components/cryptojslib/rollups/md5.js"
-        , "build/bower_components/cryptojslib/components/md5-min.js"
-        , "build/bower_components/underscore/underscore-min.js"
-        , "build/js/background.js"
+          "bower_components/jquery/dist/jquery.min.js"
+        , "bower_components/cryptojslib/rollups/md5.js"
+        , "bower_components/cryptojslib/components/md5-min.js"
+        , "bower_components/underscore/underscore-min.js"
+        , "js/background.js"
       ]
   }
   , "web_accessible_resources": [
-      "build/popups/login.html"
+      "popups/login.html"
   ]
   , "permissions": [
         "<all_urls>"

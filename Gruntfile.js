@@ -1,19 +1,32 @@
 module.exports = function(grunt) {
     grunt.initConfig({
-          watch: {
+        watch: {
             all: {
                   options: {
                       livereload: true
                     , debounceDelay: 250
                 }
-                , files: ['ext/**/*']
-                , tasks: ['jade', 'typescript:ui', 'typescript:background', 'less']
+                , files: ['ext/**/*', 'platform/<%= buildPlatform %>/**/*']
+                , tasks: ['jade', 'typescript:ui', 'typescript:background', 'less', 'copy']
+            }
+        }
+        , copy: {
+            main: {
+                files: [
+                    { src: ['**/*',  '!**/less/**',  '!**/ts/**']
+                    , expand: true
+                    , cwd: 'platform/<%= buildPlatform %>/'
+                    , dest: 'build/'
+                    }
+                    , { expand: true, src: ['resources/**/*'], dest: 'build/'}
+                ]
             }
         }
         , wiredep: {
             target: { 
                   src: ['ext/popups/popup.jade']
                 , dependencies: true
+                , ignorePath: '/build'
                 , devDependencies: false
                 , exclude: ['cryptojslib']
                 , overrides: {
@@ -49,14 +62,14 @@ module.exports = function(grunt) {
         }
         , typescript: {
               ui: {
-                  src: ['ext/ts/ui/**/*.ts']
+                  src: ['ext/ts/ui/**/*.ts', 'platform/<%= buildPlatform %>/ui/**/*.ts']
                 , dest: 'build/js/popup.js'
                 , options: {
                     target: 'es5'
                 }
             }
             , background: {
-                  src: ['ext/ts/background/**/*.ts']
+                  src: ['ext/ts/background/**/*.ts', 'platform/<%= buildPlatform %>/background/**/*.ts']
                 , dest: 'build/js/background.js'
                 , options: {
                     target: 'es5'
@@ -69,4 +82,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
+    grunt.config('buildPlatform', 'chrome');
 };
