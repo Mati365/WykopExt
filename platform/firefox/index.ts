@@ -33,4 +33,6 @@ function showPopup(state: { checked: boolean }) {
             position: button
         });
 }
-function hidePopup() { button.state('window', { checked: false }); }
+function hidePopup() {
+    button.state('window', { checked: false });
+}

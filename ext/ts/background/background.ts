@@ -46,14 +46,6 @@ module Ext.Background {
                         .Badge.setText(text.trim())
                         .Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000')
                 }
-
-                ///** Pokazywanie komentarzu tylko do wpisu */
-                //if(!tags && count > notifyCount)
-                //    chrome.notifications.create('WykopExt - powiadomienie', <chrome.notifications.NotificationOptions> {
-                //          type: 'basic'
-                //        , title: 'Powiadomienia'
-                //        , message: 'Masz nieprzeczytanie powiadomienia!'
-                //    }, null);
             });
     }
 
@@ -115,8 +107,6 @@ module Ext.Background {
     export function logout() {
         storage.clear();
         user = null;
-        chrome.browserAction.setBadgeText({
-            text: ''
-        });
+        browserApi && browserApi.Badge.setText('');
     }
 }

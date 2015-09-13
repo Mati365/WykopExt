@@ -12,4 +12,10 @@ module Ext.Background {
             }
         }
     };
+
+    /** Nadpisanie API */
+    declare let self;
+    self.port.on('get-notifications-list', message => {
+        self.port.emit('notifications-list', {});
+    });
 }

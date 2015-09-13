@@ -27,10 +27,6 @@ module Ext.UI {
         /** Pobieranie powiadomień */
         private loadNotifications() {
             /** w background jest asynchronicznie i może się nie zalogować */
-            //if(!this.background.user) {
-            //    setTimeout(this.loadNotifications.bind(this), 500);
-            //    return;
-            //}
             this.$scope.notifications = [];
             this.background.user.done((user: CoreAppUser) => {
                 user.Notifications
