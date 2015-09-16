@@ -2,9 +2,9 @@
 
 module Ext.Background {
     /** API pod konkretną przeglądarkę */
-    browserApi = <BrowserAPI> {
+    browserApi = {
         Badge: {
-            setText: (text: string): BrowserAPI => {
+              setText: (text: string): BrowserAPI => {
                 return browserApi;
             }
             , setColor: (color: string): BrowserAPI => {
@@ -15,7 +15,15 @@ module Ext.Background {
 
     /** Nadpisanie API */
     declare let self;
-    self.port.on('get-notifications-list', message => {
-        self.port.emit('notifications-list', {});
+    self.on('get-api', message => {
+        console.log('e');
+        self.port.emit('get-api', {
+              logout: logout
+            , login: login
+            , setApiMode: setApiMode
+            , user: user
+            , notifyCount: notifyCount
+            , tagsCount: tagsCount
+        });
     });
 }

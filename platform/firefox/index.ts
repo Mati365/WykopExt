@@ -10,8 +10,10 @@ let panel = require('sdk/panel').Panel({
         , data.url('../js/background.js')
     ]
     , onHide: hidePopup
+    , onMessage: function(message) {
+        console.log(message);
+    }
     , width: 280
-    , height: 358
 });
 
 /** Przycisk */

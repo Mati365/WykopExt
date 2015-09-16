@@ -12,11 +12,11 @@ strong.header-title Wybierz tryb działania aplikacji:
 .row
     .col100
         input(type='radio', ng-model='apiMode', ng-value='false')
-        span Przez parsowanie strony(większe zużycie danych, większe obciążenie, nie trzeba się logować)
+        span Przez parsowanie strony(szybsza aktualizacja, powiązana z zalogowanym kontem)
 
     .col100
         input(type='radio', ng-model='apiMode', ng-value='true')
-        span.color-info Przez API(mniejsze zużycie danych, wolniejsza aktualizacja, wymagane logowanie)
+        span.color-info Przez API(wolniejsza aktualizacja, wymagane logowanie)
 
 // Tryb API
 .api-mode(ng-show='apiMode')

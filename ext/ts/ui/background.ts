@@ -12,15 +12,19 @@ module Ext {
         login(data: LoginData);
         logout();
     }
-    export let extApiClient: ExtAPI = null;
 
     export module UI {
         /** Serwis zasobów */
         export class Background {
             /** Metody skryptu background */
             public get user() {
-                return this.api.then(data => {
-                    return data.user;
+                return this.api.then(function(data) {
+                    let defer = $.Deferred();
+                    if(data.user)
+                        defer.resolve(data.user);
+                    else
+                        defer.reject();
+                    return defer.promise();
                 });
             }
             public get api(): JQueryPromise<ExtAPI> {
@@ -32,11 +36,10 @@ module Ext {
         }
         mod
             .service('background', Background)
-            .run(($location: ng.ILocationService) => {
-                $location.path('/login');
+            .run(($location: ng.ILocationService, background: Background) => {
+                background.user
+                    .done($location.path.bind($location, '/user'))
+                    .fail($location.path.bind($location, '/login'));
             });
-            //.run(($location: ng.ILocationService, background: Background) => {
-            //    $location.path(background.user ? '/user' : '/login');
-            //});
     }
 }

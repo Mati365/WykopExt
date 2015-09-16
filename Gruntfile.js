@@ -62,7 +62,7 @@ module.exports = function(grunt) {
         }
         , typescript: {
               ui: {
-                  src: ['ext/ts/ui/**/*.ts', 'platform/<%= buildPlatform %>/ui/**/*.ts']
+                  src: ['ext/ts/ui/**/*.ts', 'platform/<%= buildPlatform %>/override/ui.ts']
                 , dest: 'build/js/popup.js'
                 , options: { target: 'es5' }
             }
@@ -72,7 +72,7 @@ module.exports = function(grunt) {
                 , options: { target: 'es5' }
             }
             , background: {
-                  src: ['ext/ts/background/**/*.ts', 'platform/<%= buildPlatform %>/background/**/*.ts']
+                  src: ['ext/ts/background/**/*.ts', 'platform/<%= buildPlatform %>/override/background.ts']
                 , dest: 'build/js/background.js'
                 , options: { target: 'es5' }
             }
@@ -83,5 +83,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
-    grunt.config('buildPlatform', 'firefox');
+    grunt.config('buildPlatform', 'chrome');
 };
