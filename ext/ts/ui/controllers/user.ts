@@ -1,6 +1,6 @@
 ///<reference path="../../shared.ts"/>
 ///<reference path="../interfaces.ts"/>
-///<reference path="../popup.ts"/>
+///<reference path="../mod.ts"/>
 
 module Ext.UI {
     interface IUserScope extends CtrlScope<UserCtrl> {
@@ -17,26 +17,26 @@ module Ext.UI {
                   notifications: []
                 , tagsNotifications: []
             });
-            background.api.done((api: ExtAPI) => {
-                this.setCategory(
-                    <any> !api.notifyCount && <any> api.tagsCount
-                );
-            });
+            this.setCategory(
+                <any> !background.api.notifyCount && <any> background.api.tagsCount
+            );
         }
 
         /** Pobieranie powiadomień */
         private loadNotifications() {
-            /** w background jest asynchronicznie i może się nie zalogować */
+            /** w background jest asynchronicznie i może się nie zalogować */
+            if(!this.background.user) {
+                setTimeout(this.loadNotifications.bind(this), 1000);
+                return;
+            }
             this.$scope.notifications = [];
-            this.background.user.done((user: CoreAppUser) => {
-                user.Notifications
-                        [this.$scope.showTags
-                        ? 'getTagsList'
-                        : 'getList'
-                        ]().done(data => {
-                    this.$scope.notifications = data;
-                    this.$scope.$digest();
-                })
+            this.background.user.Notifications
+                    [this.$scope.showTags
+                    ? 'getTagsList'
+                    : 'getList'
+                    ]().done(data => {
+                this.$scope.notifications = data;
+                this.$scope.$digest();
             });
         }
 
@@ -52,9 +52,7 @@ module Ext.UI {
         /** Wylogowywanie się */
         public logout() {
             this.$location.path('/login');
-            this.background.api.done((api: ExtAPI) => {
-                api.logout();
-            });
+            this.background.api.logout();
         }
     }
 

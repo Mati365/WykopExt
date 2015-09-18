@@ -25,11 +25,11 @@
   ],
   "dependencies": {
     "angular": "~1.4.5",
-    "angular-resource": "~1.4.5",
     "angular-route": "~1.4.5",
     "cleancss": "https://github.com/Mati365/CleanCSS.git#c52f5df2062797275b4d4dc54d87ac11ab582665",
     "cryptojslib": "~3.1.2",
     "font-awesome": "~4.4.0",
+    "is_js": "~0.7.4",
     "jquery": "~2.1.4",
     "underscore": "~1.8.3"
   }

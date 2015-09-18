@@ -1,5 +1,5 @@
 ///<reference path="../shared.ts"/>
-///<reference path="popup.ts"/>
+///<reference path="mod.ts"/>
 
 module Ext {
     /** Metody background */
@@ -16,30 +16,20 @@ module Ext {
     export module UI {
         /** Serwis zasobów */
         export class Background {
+            public static apiCaller: () => ExtAPI = null;
+
             /** Metody skryptu background */
-            public get user() {
-                return this.api.then(function(data) {
-                    let defer = $.Deferred();
-                    if(data.user)
-                        defer.resolve(data.user);
-                    else
-                        defer.reject();
-                    return defer.promise();
-                });
-            }
-            public get api(): JQueryPromise<ExtAPI> {
-                return $
-                    .Deferred()
-                    .resolve((<any> chrome.extension.getBackgroundPage()).Ext.Background)
-                    .promise();
+            public get user(): CoreAppUser { return this.api.user; }
+            public get api(): ExtAPI {
+                if(!Background.apiCaller)
+                    throw new Error('Unsupported platform!');
+                return Background.apiCaller();
             }
         }
         mod
             .service('background', Background)
             .run(($location: ng.ILocationService, background: Background) => {
-                background.user
-                    .done($location.path.bind($location, '/user'))
-                    .fail($location.path.bind($location, '/login'));
+                $location.path(background.user ? '/user' : '/login');
             });
     }
 }

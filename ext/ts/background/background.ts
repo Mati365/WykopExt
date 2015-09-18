@@ -75,8 +75,10 @@ module Ext.Background {
         }
         if(user) {
             stopIntervals();
-            initInterval('notify', updateBadge.bind(window, false), storage.apiMode ? 6000 : 22000);
-            initInterval('tags', updateBadge.bind(window, true), storage.apiMode ? 10000 : 60000);
+            initInterval('notify', () => {
+                updateBadge(true);
+                updateBadge(false);
+            }, storage.apiMode ? 6000 : 22000);
         }
         return user;
     }

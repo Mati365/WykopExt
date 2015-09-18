@@ -15,8 +15,6 @@ module Ext.UI {
                   templateUrl: 'user.html'
                 , controller: 'UserCtrl'
             })
-            .otherwise({
-                redirectTo: '/login'
-            });
+            .otherwise('/login');
     }
 }

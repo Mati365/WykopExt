@@ -1,6 +1,6 @@
 ///<reference path="../../shared.ts"/>
 ///<reference path="../interfaces.ts"/>
-///<reference path="../popup.ts"/>
+///<reference path="../mod.ts"/>
 
 module Ext.UI {
     interface LoginScope extends CtrlScope<LoginCtrl> {
@@ -21,13 +21,13 @@ module Ext.UI {
 
         /** Logowanie się do background */
         public login() {
-            this.background.api.done((api: ExtAPI) => {
-                if(api.setApiMode(this.$scope.apiMode) || api.login(this.$scope.data))
-                    this.$location.path('/user');
-                else
-                    this.$scope.error = 'Błędne dane logowania :(';
-            });
+            if(this.background.api.setApiMode(this.$scope.apiMode)
+                || this.background.api.login(this.$scope.data))
+                this.$location.path('/user');
+            else
+                this.$scope.error = 'Błędne dane logowania :(';
         }
     }
+    console.log('e');
     mod.controller('LoginCtrl', LoginCtrl)
 }

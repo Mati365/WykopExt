@@ -24,14 +24,20 @@ module Ext.Parser {
         private parseSource(parser: (html: string) => any) {
             if(this.cache.html.length && new Date().getTime() < this.cache.expDate)
                 return parser(this.cache.html);
-            return $.get(this.wykopURL).then(html => {
-                this.cache = {
-                      html: html
-                    , hash: html.match(/hash.*:."(.*)",/)[1]
-                    , expDate: new Date().getTime() + 6000000
-                };
-                return parser(html);
-            });
+
+            return $
+                .get(this.wykopURL)
+                .then(html => {
+                    this.cache = {
+                          html: html
+                        , hash: html.match(/hash.*:."(.*)",/)[1]
+                        , expDate: new Date().getTime() + 6000000
+                    };
+                    return parser(html);
+                })
+                .fail(e => {
+                    console.log(e);
+                });
         }
 
         /**
@@ -68,23 +74,6 @@ module Ext.Parser {
          * @returns {JQueryDeferred<T>}
          */
         private getSource(tag: string) {
-            //let defer = $.Deferred();
-            //this.parseSource(html => {
-            //    $.ajax({
-            //          type: 'GET'
-            //        , url: $(html).find(tag).attr('data-ajaxurl') + '/hash/' + this.cache.hash
-            //        , xhrFields: {
-            //            withCredentials: true
-            //        }
-            //    }).fail(d => {
-            //        let html = d.responseText.match(/"data":{"html":"(.*)"}}/)[1];
-            //        html = html
-            //            .replace(/\\r|\\n|\\t/g, '')
-            //            .replace(/\\"/g, '"')
-            //            .replace(/\\\//g, '/');
-            //        defer.resolve($(html).find('p'));
-            //    });
-            //});
             return this.parseSource(html => {
                 return this.makeAjax2Request($(html).find(tag).attr('data-ajaxurl')).then((d: string) => {
                     let html = d.match(/"data":{"html":"(.*)"}}/)[1];

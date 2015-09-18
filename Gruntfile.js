@@ -1,4 +1,13 @@
 module.exports = function(grunt) {
+    grunt.registerTask('build', [
+          'jade'
+        , 'wiredep'
+        , 'typescript:ui'
+        , 'typescript:background'
+        , 'typescript:platform'
+        , 'less'
+        , 'copy'
+    ]);
     grunt.initConfig({
         watch: {
             all: {
@@ -7,13 +16,13 @@ module.exports = function(grunt) {
                     , debounceDelay: 250
                 }
                 , files: ['ext/**/*', 'platform/<%= buildPlatform %>/**/*']
-                , tasks: ['jade', 'typescript:ui', 'typescript:background', 'typescript:platform', 'less', 'copy']
+                , tasks: ['build']
             }
         }
         , copy: {
             main: {
                 files: [
-                    { src: ['**/*',  '!**/less/**',  '!**/ts/**', '!*.ts']
+                    { src: ['**/*',  '!**/*.less', '!**/*.jade', '!**/*.ts', '!**/override/*']
                     , expand: true
                     , cwd: 'platform/<%= buildPlatform %>/'
                     , dest: 'build/'
@@ -83,5 +92,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
-    grunt.config('buildPlatform', 'chrome');
+    grunt.config('buildPlatform', 'firefox');
 };
