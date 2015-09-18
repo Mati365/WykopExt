@@ -2,6 +2,8 @@
 let data = require('sdk/self').data;
 let panel = require('sdk/panel').Panel({
       contentURL: data.url('popups/popup.html')
+    , width: 280
+    , height: 350
     , contentScriptFile: [
         /** Background script z chrome */
           data.url('../bower_components/jquery/dist/jquery.min.js')
@@ -16,9 +18,9 @@ let panel = require('sdk/panel').Panel({
         , data.url('../bower_components/is_js/is.js')
         , data.url('../js/popup.js')
     ]
-    , onHide: hidePopup
-    , width: 280
-    , height: 350
+    , onHide: () => {
+        button.state('window', { checked: false });
+    }
 });
 
 /** Przycisk */
@@ -39,7 +41,4 @@ function showPopup(state: { checked: boolean }) {
         panel.show({
             position: button
         });
-}
-function hidePopup() {
-    button.state('window', { checked: false });
 }

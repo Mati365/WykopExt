@@ -6,7 +6,7 @@ module Ext.UI {
     interface LoginScope extends CtrlScope<LoginCtrl> {
         data: LoginData;
         error: string;
-        apiMode: boolean; // apiMode nie potrzebuje danych usera
+        apiMode: boolean; // apiMode nie potrzebuje zadnych danych usera
     }
     export class LoginCtrl extends Controller {
         constructor(
@@ -28,6 +28,5 @@ module Ext.UI {
                 this.$scope.error = 'Błędne dane logowania :(';
         }
     }
-    console.log('e');
     mod.controller('LoginCtrl', LoginCtrl)
 }
