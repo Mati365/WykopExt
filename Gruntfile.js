@@ -92,5 +92,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
-    grunt.config('buildPlatform', 'chrome');
+    grunt.config('buildPlatform', 'firefox');
 };

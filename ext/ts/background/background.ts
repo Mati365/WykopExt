@@ -5,8 +5,8 @@
 module Ext.Background {
     export interface BrowserAPI {
         Badge: {
-              setText: (text: string) => BrowserAPI
-            , setColor: (color: string) => BrowserAPI
+              setText: (text: string) => void
+            , setColor: (color: string) => void
         }
     }
     export let browserApi: BrowserAPI = null;
@@ -42,9 +42,8 @@ module Ext.Background {
                 let text = (notifyCount ? notifyCount : '')
                          + (tagsCount ? ' #' + (tagsCount > 9 ? '9+' : tagsCount) : '');
                 if(browserApi) {
-                    browserApi
-                        .Badge.setText(text.trim())
-                        .Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000')
+                    browserApi.Badge.setText(text.trim())
+                    browserApi.Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000')
                 }
             });
     }
@@ -63,6 +62,9 @@ module Ext.Background {
      * trybu aplikacji wczytuje określone meody
      */
     function loadCachedClient(): CoreAppUser {
+        if(_.isEmpty(storage))
+            return;
+
         let user: CoreAppUser = null;
         if(<any> storage.apiMode === 'false')
             user = new Parser.User();

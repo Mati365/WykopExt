@@ -2,14 +2,11 @@
 
 module Ext.Background {
     /** API pod konkretną przeglądarkę */
+    declare let self: any;
     browserApi = {
         Badge: {
-            setText: (text: string): BrowserAPI => {
-                return browserApi;
-            }
-            , setColor: (color: string): BrowserAPI => {
-                return browserApi;
-            }
+              setText: (text: string) => { self.port.emit('set-badge-text', text); }
+            , setColor: (color: string) => { self.port.emit('set-badge-color', color); }
         }
     };
 }

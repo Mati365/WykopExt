@@ -14,7 +14,6 @@ module Ext.UI {
             .when('/user', {
                   templateUrl: 'user.html'
                 , controller: 'UserCtrl'
-            })
-            .otherwise('/login');
+            });
     }
 }

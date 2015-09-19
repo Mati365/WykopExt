@@ -16,7 +16,5 @@ module Ext.UI {
             angular
                 .element(document)
                 .ready(angular.bootstrap.bind(null, document, ['app']));
-        else
-            throw Error('Unsupported browser!');
     }
 }

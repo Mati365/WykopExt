@@ -2,7 +2,7 @@
 let data = require('sdk/self').data;
 let panel = require('sdk/panel').Panel({
       contentURL: data.url('popups/popup.html')
-    , width: 280
+    , width: 260
     , height: 350
     , contentScriptFile: [
         /** Background script z chrome */
@@ -18,9 +18,7 @@ let panel = require('sdk/panel').Panel({
         , data.url('../bower_components/is_js/is.js')
         , data.url('../js/popup.js')
     ]
-    , onHide: () => {
-        button.state('window', { checked: false });
-    }
+    , onHide: hidePopup
 });
 
 /** Przycisk */
@@ -34,6 +32,13 @@ let button = require('sdk/ui/button/toggle').ToggleButton({
     }
     , onChange: showPopup
 });
+panel.port
+    .on('set-badge-text', data => {
+        button.badge = data;
+    })
+    .on('set-badge-color', color => {
+        button.badgeColor = color;
+    });
 
 /** Akcje przycisku */
 function showPopup(state: { checked: boolean }) {
@@ -41,4 +46,7 @@ function showPopup(state: { checked: boolean }) {
         panel.show({
             position: button
         });
+}
+function hidePopup() {
+    button.state('window', { checked: false });
 }

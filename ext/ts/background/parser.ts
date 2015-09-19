@@ -25,19 +25,14 @@ module Ext.Parser {
             if(this.cache.html.length && new Date().getTime() < this.cache.expDate)
                 return parser(this.cache.html);
 
-            return $
-                .get(this.wykopURL)
-                .then(html => {
-                    this.cache = {
-                          html: html
-                        , hash: html.match(/hash.*:."(.*)",/)[1]
-                        , expDate: new Date().getTime() + 6000000
-                    };
-                    return parser(html);
-                })
-                .fail(e => {
-                    console.log(e);
-                });
+            return $.get(this.wykopURL).then(html => {
+                this.cache = {
+                      html: html
+                    , hash: html.match(/hash.*:."(.*)",/)[1]
+                    , expDate: new Date().getTime() + 6000000
+                };
+                return parser(html);
+            });
         }
 
         /**

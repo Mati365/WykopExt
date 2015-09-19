@@ -1,15 +1,15 @@
 {
-  "title": "WykopExt",
-  "name": "wykopext",
-  "version": "0.0.1",
-  "description": "A simple Firefox extension that show notifications from Wykop.pl",
-  "main": "index.js",
-  "author": "Mateusz Bagiński",
-  "engines": {
-    "firefox": ">=38.0a1"
-  },
-  "permissions": {
-    "cross-domain-content": ["http://www.wykop.pl"]
-  },
-  "license": "MIT"
+   "title": "WykopExt"
+  ,"name": "wykopext"
+  , "version": "0.0.1"
+  , "description": "A simple Firefox extension that show notifications from Wykop.pl"
+  , "homepage": "https://github.com/Mati365/WykopExt"
+  , "icon": "icon.png"
+  , "main": "index.js"
+  , "author": "Mateusz Bagiński"
+  , "engines": { "firefox": ">=38.0a1" }
+  , "permissions": { "cross-domain-content": [
+      "http://www.wykop.pl"
+  ]}
+  , "license": "MIT"
 }
