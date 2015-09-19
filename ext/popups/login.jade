@@ -12,11 +12,11 @@ strong.header-title Wybierz tryb działania aplikacji:
 .row
     .col100
         input(type='radio', ng-model='apiMode', ng-value='false')
-        span Przez parsowanie strony(szybsza aktualizacja, powiązana z zalogowanym kontem)
+        span Przez pobieranie Ajax ze strony z zalogowanej sesji(szybsza aktualizacja, powiązana z zalogowanym kontem)
 
     .col100
         input(type='radio', ng-model='apiMode', ng-value='true')
-        span.color-info Przez API(wolniejsza aktualizacja, wymagane logowanie)
+        span.color-info Przez API z konta podanego w formularzu(wolniejsza aktualizacja, wymagane tworzenie aplikacji API)
 
 // Tryb API
 .api-mode(ng-show='apiMode')
@@ -35,7 +35,7 @@ strong.header-title Wybierz tryb działania aplikacji:
         .col100 #[+formField('key', 'text', 'klucz aplikacji', 'data.apiKey')]
         .col100 #[+formField('key', 'text', 'prywatny klucz aplikacji', 'data.apiSecret')]
 
-.row.login-toolbar
+.row
     .col50
         button.blue(ng-click='fn.login()') Zaloguj się
     .col50

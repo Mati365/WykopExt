@@ -1,7 +1,7 @@
 ///<reference path="../../../ext/ts/background/background.ts"/>
 
 module Ext.Background {
-    /** API pod konkretną przeglądarkę */
+    /** API pod firefoxa */
     declare let self: any;
     browserApi = {
         Badge: {

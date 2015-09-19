@@ -62,7 +62,7 @@ module.exports = function(grunt) {
                 }
                 , files: [{
                       cwd: 'ext/popups'
-                    , src: '**/*.jade'
+                    , src: 'popup.jade'
                     , dest: 'build/data/popups'
                     , expand: true
                     , ext: '.html'
@@ -92,5 +92,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
-    grunt.config('buildPlatform', 'firefox');
+    grunt.config('buildPlatform', grunt.option('platform') || 'chrome');
 };

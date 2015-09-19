@@ -19,4 +19,7 @@ html
         // endbower
         script(src='../../js/popup.js')
 
+        // Z powodu bug'a w angular, który uniemożliwia ładowanie szablonów wszystko pakuje do popup
+        script(type='text/ng-template', id='login.html') #[include login.jade]
+        script(type='text/ng-template', id='user.html') #[include user.jade]
         .page(ng-view)

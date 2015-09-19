@@ -1,4 +1,6 @@
-::-webkit-scrollbar { display: none;  };
+::-webkit-scrollbar {
+  display: none;
+};
 html, body {
   min-height: 256px;
   overflow-y: auto;
@@ -9,8 +11,7 @@ body {
 
   width:        256px;
   margin:       0;
-  padding:      2px 10px;
-
+  padding:      0;
   background:   #FFFFFF;
 };
 .menu-toolbar {
@@ -21,13 +22,17 @@ body {
 
   background:    #ffffff;
   font-size:     1.4em;
-  width:         245px;
+  width:         256px;
   height:        21px;
   span:extend(.segment) {
-    &.active { color: #000000; };
-    color:          #ebebeb;
+    &.active {
+      color: #000000;
+    };
+    color: #ebebeb;
   };
-  a:hover { color: black; };
+  a:hover {
+    color: black;
+  };
 };
 .notifications-list {
   margin-bottom: 1.5em;
@@ -39,12 +44,18 @@ body {
     height:     auto;
     max-height: 38px;
   };
-  div[class*='col'] {  margin-bottom: 0;  };
-  .row .col80 {  word-break: break-all;  };
-  > div:last-of-type:not(:first-of-type) .divider.vertical {  border: 0;  };
+  div[class*='col'] {
+    margin-bottom: 0;
+  };
+  .row .col80 {
+    word-break: break-all;
+  };
+  > div:last-of-type:not(:first-of-type) .divider.vertical {
+    border: 0;
+  };
 };
 .loading-screen {
-  height:   200px;
+  height: 200px;
   img {
     width:  64px;
     height: 64px;
