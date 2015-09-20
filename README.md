@@ -2,14 +2,14 @@
 A simple browser extension that show notifications from Wykop.pl
 
 # Installation from source:
-*Chrome:*
+**Chrome:**
 ```
 grunt build --platform=chrome
 
 ```
 Drag and drop build folder to chrome://extension
 
-*Mozilla Firefox:*
+**Mozilla Firefox:**
 ```
 grunt build --platform=firefox
 
