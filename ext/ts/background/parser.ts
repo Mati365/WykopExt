@@ -105,17 +105,18 @@ module Ext.Parser {
         }
 
         /** Metody API */
+        private cachedNotifications: number[] = [0, 0];
         public Notifications = {
               getCount: () => {
                 return this.getNotificationsCount().then(data => {
-                    return data[0];
+                    return (this.cachedNotifications = data)[0];
                 });
             }
             , getTagsCount: () => {
-                return this.getNotificationsCount().then(data => {
-                    return data[1];
-                });
+                return $.Deferred().resolve(this.cachedNotifications[1]).promise();
             }
+
+            /** Lista powiadomień */
             , getList:     () => { return this.parseList('li.notification.m-user a'); }
             , getTagsList: () => { return this.parseList('li.notification.m-tag a'); }
         }
