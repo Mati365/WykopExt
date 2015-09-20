@@ -1,4 +1,4 @@
-/// <reference path="defs.ts" />
+///<reference path="defs.ts" />
 
 /**
  * Interfejsy modyfikujące domyślne

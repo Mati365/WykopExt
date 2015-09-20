@@ -8,8 +8,9 @@
   , "main": "index.js"
   , "author": "Mateusz Bagiński"
   , "engines": { "firefox": ">=38.0a1" }
-  , "permissions": { "cross-domain-content": [
-      "http://www.wykop.pl"
-  ]}
+  , "permissions": {
+      "cross-domain-content": ["http://www.wykop.pl"]
+    , "private-browsing": false
+  }
   , "license": "MIT"
 }

@@ -3,12 +3,6 @@
 ///<reference path="parser.ts"/>
 
 module Ext.Background {
-    export interface BrowserAPI {
-        Badge: {
-              setText: (text: string) => void
-            , setColor: (color: string) => void
-        }
-    }
     export let browserApi: BrowserAPI = null;
 
     /**
@@ -19,15 +13,21 @@ module Ext.Background {
     let intervals: { [index: string]: number } = {};
     export let user: CoreAppUser = loadCachedClient();
 
+    /** Pobieranie powiadomień funkcją bo export zapisuje jako assoc */
+    export let notifyCount = 0
+             , tagsCount   = 0;
+
     /**
      * Liczenie powiadomień, w zależności od
      * parzystości pokazywane są określone powiadomienia
      * Gdy jest parzyste pokazuje powiadomienia z wykopaliska
      * a gdy nie pokazuje hashtagi o ile są
      */
-    export let notifyCount = 0
-             , tagsCount   = 0;
     function updateBadge(tags: boolean = false) {
+        var limit = (number: number, limit: number) => {
+            return number >= limit ? (limit.toString() + '+') : number;
+        };
+
         /** Pobieranie */
         user
             .Notifications[tags ? 'getTagsCount' : 'getCount']()
@@ -39,11 +39,12 @@ module Ext.Background {
                     notifyCount = count;
 
                 /** Aktualizacja badge */
-                let text = (notifyCount ? notifyCount : '')
-                         + (tagsCount ? ' #' + (tagsCount > 9 ? '9+' : tagsCount) : '');
+                let text = notifyCount
+                        ? limit(notifyCount, 99) + (tagsCount ? ' #+':'')
+                        : '#' + limit(tagsCount, notifyCount ? 9 : 999);
                 if(browserApi) {
-                    browserApi.Badge.setText(text.trim())
-                    browserApi.Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000')
+                    browserApi.Badge.setText(text.trim());
+                    browserApi.Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000');
                 }
             });
     }

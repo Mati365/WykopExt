@@ -1,16 +1,18 @@
 module Ext.UI {
     /** Otwieranie nowych linków w nowych zakładkach */
     export class ExtHref implements ng.IDirective {
-        public restrict: string = 'A';
+        constructor(
+            public background: Background
+        ) {}
         public link: ng.IDirectiveLinkFn = (scope: ng.IScope, element: ng.IAugmentedJQuery, attrs: any) => {
             $(element)
-                .attr('href', attrs.extHref)
+                .attr('href', 'javascript:;')
                 .click(() => {
-                    chrome.tabs.create({ url: attrs.extHref });
+                    this.background.api.browserApi.openTab(attrs.extHref);
                 });
         };
 
-        static factory(): ng.IDirectiveFactory { return () => new ExtHref; }
+        static factory(): ng.IDirectiveFactory { return (background) => new ExtHref(background); }
     }
 
     /** Wyświetlanie innego obrazu w razie błędu */

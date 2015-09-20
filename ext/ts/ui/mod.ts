@@ -1,5 +1,5 @@
-/// <reference path="defs.ts"/>
-/// <reference path="routes.ts"/>
+///<reference path="defs.ts"/>
+///<reference path="routes.ts"/>
 
 module Ext.UI {
     export let mod = angular

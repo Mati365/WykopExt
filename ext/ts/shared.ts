@@ -8,6 +8,15 @@ module Ext {
         });
     };
 
+    /** API specyficzne dla przeglądarki */
+    export interface BrowserAPI {
+          openTab: (url: string) => void
+        , Badge: {
+              setText: (text: string) => void
+            , setColor: (color: string) => void
+        }
+    }
+
     /** Dane logowania */
     export interface LoginData extends Storage {
         apiMode: boolean;

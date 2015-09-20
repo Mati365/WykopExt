@@ -2,7 +2,7 @@
 let data = require('sdk/self').data;
 let panel = require('sdk/panel').Panel({
       contentURL: data.url('popups/popup.html')
-    , width: 280
+    , width: 275
     , height: 350
     , contentScriptFile: [
         /** Background script z chrome */
@@ -33,8 +33,12 @@ let button = require('sdk/ui/button/toggle').ToggleButton({
     , onChange: showPopup
 });
 panel.port
-    .on('set-badge-text', data => {
-        button.badge = data;
+    .on('open-tab', url => {
+        require('sdk/tabs').open(url);
+        panel.hide();
+    })
+    .on('set-badge-text', text => {
+        button.badge = text;
     })
     .on('set-badge-color', color => {
         button.badgeColor = color;
@@ -42,10 +46,12 @@ panel.port
 
 /** Akcje przycisku */
 function showPopup(state: { checked: boolean }) {
-    if(state.checked)
+    if(state.checked) {
+        panel.port.emit('reload-page');
         panel.show({
             position: button
         });
+    }
 }
 function hidePopup() {
     button.state('window', { checked: false });

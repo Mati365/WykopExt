@@ -17,8 +17,17 @@ module Ext.UI {
                   notifications: []
                 , tagsNotifications: []
             });
+
+            /** Firefox nie odświeża popupa po każdym pokazaniu */
+            this.reloadNotifications();
+            $(document).on('reload-notifications', this.reloadNotifications.bind(this));
+
+        }
+
+        /** Ponowne wczytywnie wydarzeń na FF */
+        private reloadNotifications() {
             this.setCategory(
-                <any> !background.api.notifyCount && <any> background.api.tagsCount
+                <any> !this.background.api.notifyCount && <any> this.background.api.tagsCount
             );
         }
 

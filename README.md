@@ -1,11 +1,31 @@
 # WykopExt
-A simple Google Chrome extension that show notifications from Wykop.pl
+A simple browser extension that show notifications from Wykop.pl
+
+# Installation from source:
+## Chrome:
+```
+grunt build --platform=chrome
+
+```
+Drag and drop build folder to chrome://extension
+
+## firefox:
+```
+grunt build --platform=firefox
+
+```
+In build folder:
+```
+jpm xpi
+```
+Drag and drop extension to firefox.
 
 ## Screenshots
 ![Screenshoot](/screenshots/1.png?raw=true "Screen")
 ![Screenshoot](/screenshots/3.png?raw=true "Screen")
 ![Screenshoot](/screenshots/4.png?raw=true "Screen")
 ![Screenshoot](/screenshots/2.png?raw=true "Screen")
+![Screenshoot](/screenshots/5.png?raw=true "Screen")
 
 ## License
 The MIT License (MIT)
