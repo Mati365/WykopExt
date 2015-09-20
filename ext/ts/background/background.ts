@@ -41,7 +41,7 @@ module Ext.Background {
                 /** Aktualizacja badge */
                 let text = notifyCount
                         ? limit(notifyCount, 99) + (tagsCount ? ' #+':'')
-                        : '#' + limit(tagsCount, notifyCount ? 9 : 999);
+                        : (tagsCount ? ('#' + limit(tagsCount, notifyCount ? 9 : 999)) : '');
                 if(browserApi) {
                     browserApi.Badge.setText(text.trim());
                     browserApi.Badge.setColor(!notifyCount ? '#0000FF' : '#FF0000');
