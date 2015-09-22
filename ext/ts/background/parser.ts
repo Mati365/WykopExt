@@ -48,7 +48,7 @@ module Ext.Parser {
                     withCredentials: true
                 }
             }).fail(d => {
-                defer.resolve(d.responseText);
+                d.responseText && defer.resolve(d.responseText);
             });
             return defer;
         }
@@ -58,7 +58,7 @@ module Ext.Parser {
             return this.parseSource(() => {
                 return this.makeAjax2Request('http://www.wykop.pl/ajax2/powiadomienia/mine').then((d: string) => {
                     let notify = d.match(/"count":(\d*),"hcount":(\d*)/);
-                    return [ notify[1], notify[2] ];
+                    return [notify[1], notify[2]];
                 });
             });
         }
