@@ -5,11 +5,12 @@ A simple browser extension that show notifications from Wykop.pl
 **Chrome:**
 ```
 grunt build --platform=chrome
-
 ```
 Drag and drop build folder to chrome://extension
 
 **Mozilla Firefox:**
+Market link: https://addons.mozilla.org/firefox/addon/wykopext/
+or
 ```
 grunt build --platform=firefox
 
