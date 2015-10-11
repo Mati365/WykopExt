@@ -13,8 +13,8 @@ let panel = require('sdk/panel').Panel({
         , data.url('../js/background.js')
 
         /** Popup script z chrome */
-        , data.url('../bower_components/angular/angular.js')
-        , data.url('../bower_components/angular-route/angular-route.js')
+        , data.url('../bower_components/angular/angular.min.js')
+        , data.url('../bower_components/angular-route/angular-route.min.js')
         , data.url('../bower_components/is_js/is.js')
         , data.url('../js/popup.js')
     ]

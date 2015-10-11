@@ -1,12 +1,15 @@
 module.exports = function(grunt) {
     grunt.registerTask('build', [
-          'jade'
+          'clean:build'
+        , 'clean:bower'
+        , 'jade'
         , 'wiredep'
         , 'typescript:ui'
         , 'typescript:background'
         , 'typescript:platform'
         , 'less'
         , 'copy'
+        , 'compress'
     ]);
     grunt.initConfig({
         watch: {
@@ -18,6 +21,31 @@ module.exports = function(grunt) {
                 , files: ['ext/**/*', 'platform/<%= buildPlatform %>/**/*']
                 , tasks: ['build']
             }
+        }
+        , compress: {
+            all: {
+                  options: {
+                        mode: 'zip'
+                      , archive: './binaries/<%= buildPlatform === "firefox" ? "firefox.xpi" : "chrome.zip" %>'
+                  }
+                , expand: true
+                , cwd: 'build/'
+                , src: ['**/*']
+            }
+        }
+        , clean : {
+              build: ['build/*', '!build/bower_components']
+            , bower :
+                [ 'build/bower_components/*/*'
+                , '!build/bower_components/**/*/dist'
+                , '!build/bower_components/angular/angular.min.js'
+                , '!build/bower_components/angular-route/angular-route.min.js'
+                , '!build/bower_components/cryptojslib/**/*'
+                , '!build/bower_components/font-awesome/css'
+                , '!build/bower_components/font-awesome/fonts'
+                , '!build/bower_components/underscore/underscore-min.js'
+                , '!build/bower_components/is_js/is.js'
+                ]
         }
         , copy: {
             main: {
@@ -39,7 +67,10 @@ module.exports = function(grunt) {
                 , devDependencies: false
                 , exclude: ['cryptojslib']
                 , overrides: {
-                    'font-awesome': { main: ['css/font-awesome.min.css'] }
+                      'font-awesome': { main: ['css/font-awesome.min.css'] }
+                    , 'angular-route': { main: ['angular-route.min.js'] }
+                    , 'angular': { main: ['angular.min.js'] }
+                    , 'underscore': { main: ['underscore-min.js'] }
                 }
             }
         }

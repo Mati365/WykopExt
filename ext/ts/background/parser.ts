@@ -58,7 +58,11 @@ module Ext.Parser {
             return this.parseSource(() => {
                 return this.makeAjax2Request('http://www.wykop.pl/ajax2/powiadomienia/mine').then((d: string) => {
                     let notify = d.match(/"count":(\d*),"hcount":(\d*)/);
-                    return [notify[1], notify[2]];
+                    if(!notify) {
+                        this.cache.html = '';
+                        return [0, 0];
+                    } else
+                        return [notify[1], notify[2]];
                 });
             });
         }
