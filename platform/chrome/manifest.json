@@ -2,7 +2,7 @@
     "manifest_version": 2
   , "name": "WykopExt"
   , "description": "A simple browser extension that shows notifications from wykop.pl"
-  , "version": "0.0.1"
+  , "version": "0.0.6"
   , "browser_action": {
       "default_icon": "data/icon.png"
     , "default_popup": "data/popups/popup.html"

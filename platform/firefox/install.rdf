@@ -5,7 +5,7 @@
         <em:type>2</em:type>
         <em:bootstrap>true</em:bootstrap>
         <em:unpack>false</em:unpack>
-        <em:version>0.0.1</em:version>
+        <em:version>0.0.6</em:version>
         <em:name>WykopExt</em:name>
         <em:description>A simple Google Chrome extension that show notifications from Wykop.pl</em:description>
         <em:creator>Mateusz Bagiński</em:creator>
