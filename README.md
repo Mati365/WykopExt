@@ -23,10 +23,8 @@ Drag and drop extension to firefox.
 
 ## Screenshots
 ![Screenshoot](/screenshots/1.png?raw=true "Screen")
-![Screenshoot](/screenshots/3.png?raw=true "Screen")
-![Screenshoot](/screenshots/4.png?raw=true "Screen")
 ![Screenshoot](/screenshots/2.png?raw=true "Screen")
-![Screenshoot](/screenshots/5.png?raw=true "Screen")
+![Screenshoot](/screenshots/3.png?raw=true "Screen")
 
 ## License
 The MIT License (MIT)
