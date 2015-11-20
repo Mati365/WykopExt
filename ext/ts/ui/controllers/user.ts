@@ -14,14 +14,12 @@ module Ext.UI {
             , private background: Background
         ) {
             super($scope, {
-                  notifications: []
-                , tagsNotifications: []
+                notifications: null
             });
 
             /** Firefox nie odświeża popupa po każdym pokazaniu */
             this.reloadNotifications();
             $(document).on('reload-notifications', this.reloadNotifications.bind(this));
-
         }
 
         /** Ponowne wczytywnie wydarzeń na FF */
@@ -34,19 +32,20 @@ module Ext.UI {
         /** Pobieranie powiadomień */
         private loadNotifications() {
             /** w background jest asynchronicznie i może się nie zalogować */
-            if(!this.background.user) {
-                setTimeout(this.loadNotifications.bind(this), 1000);
-                return;
-            }
-            this.$scope.notifications = [];
+            this.$scope.notifications = null;
             this.background.user.Notifications
                     [this.$scope.showTags
                     ? 'getTagsList'
                     : 'getList'
-                    ]().done(data => {
-                this.$scope.notifications = data;
-                this.$scope.$digest();
-            });
+                    ]()
+                .done(data => {
+                    this.$scope.notifications = data;
+                    this.$scope.$digest();
+                })
+                .fail(() => {
+                    this.$scope.notifications = [];
+                    this.$scope.$digest();
+                });
         }
 
         /**

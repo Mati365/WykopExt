@@ -41,15 +41,20 @@ module Ext.Parser {
          */
         private makeAjax2Request(link: string) {
             let defer = $.Deferred();
-            $.ajax(<JQueryAjaxSettings> {
-                  type: 'GET'
-                , url: link + '/hash/' + this.cache.hash
-                , xhrFields: {
-                    withCredentials: true
-                }
-            }).fail(d => {
-                d.responseText && defer.resolve(d.responseText);
-            });
+            $
+                .ajax(<JQueryAjaxSettings> {
+                      type: 'GET'
+                    , url: link + '/hash/' + this.cache.hash
+                    , xhrFields: {
+                        withCredentials: true
+                    }
+                })
+                .fail(d => {
+                    if(d.responseText)
+                        defer.resolve(d.responseText);
+                    else
+                        defer.reject();
+                });
             return defer;
         }
 

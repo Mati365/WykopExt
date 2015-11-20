@@ -16,8 +16,14 @@
                     , ng-click='fn.logout()'
                     ) #[i.fa.fa-fw.fa-sign-out]
 
-.loading-screen(ng-hide='notifications.length')
-    img(src='../../data/loading.gif')
+.loading-screen(ng-hide='notifications')
+    .logo
+        img(src='../../data/loading.gif')
+        .active.text-center.color-info Pobieranie
+
+.loading-screen(ng-if='notifications && !notifications.length')
+    .logo
+        .active.text-center.color-info Brak powiadomień (•_•)
 
 .notifications-list(ng-show='notifications.length')
     .text-smallest.row(ng-repeat='msg in notifications')

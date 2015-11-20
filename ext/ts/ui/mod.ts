@@ -1,4 +1,4 @@
-///<reference path="defs.ts"/>
+///<reference path="../../../typings/tsd.d.ts" />
 ///<reference path="routes.ts"/>
 
 module Ext.UI {

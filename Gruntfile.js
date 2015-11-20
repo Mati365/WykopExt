@@ -37,14 +37,34 @@ module.exports = function(grunt) {
               build: ['build/*', '!build/bower_components']
             , bower :
                 [ 'build/bower_components/*/*'
-                , '!build/bower_components/**/*/dist'
                 , '!build/bower_components/angular/angular.min.js'
                 , '!build/bower_components/angular-route/angular-route.min.js'
                 , '!build/bower_components/cryptojslib/**/*'
-                , '!build/bower_components/font-awesome/css'
-                , '!build/bower_components/font-awesome/fonts'
+
+                , '!build/bower_components/font-awesome/fonts/**'
+                , 'build/bower_components/font-awesome/fonts/*'
+                , '!build/bower_components/font-awesome/fonts/fontawesome-webfont.ttf'
+
+                , '!build/bower_components/font-awesome/css/**'
+                , 'build/bower_components/font-awesome/css/*'
+                , '!build/bower_components/font-awesome/css/font-awesome.min.css'
+
                 , '!build/bower_components/underscore/underscore-min.js'
                 , '!build/bower_components/is_js/is.js'
+                , '!build/bower_components/cleancss/dist'
+
+                , '!build/bower_components/jquery/dist/**'
+                , 'build/bower_components/jquery/dist/*'
+                , '!build/bower_components/jquery/dist/jquery.min.js'
+
+                , 'build/bower_components/cryptojslib/*'
+                , '!build/bower_components/cryptojslib/rollups/**'
+                , 'build/bower_components/cryptojslib/rollups/*'
+                , '!build/bower_components/cryptojslib/rollups/md5.js'
+
+                , '!build/bower_components/cryptojslib/components/**'
+                , 'build/bower_components/cryptojslib/components/*'
+                , '!build/bower_components/cryptojslib/components/md5-min.js'
                 ]
         }
         , copy: {
@@ -71,6 +91,7 @@ module.exports = function(grunt) {
                     , 'angular-route': { main: ['angular-route.min.js'] }
                     , 'angular': { main: ['angular.min.js'] }
                     , 'underscore': { main: ['underscore-min.js'] }
+                    , 'jquery': { main: ['dist/jquery.min.js'] }
                 }
             }
         }
@@ -123,5 +144,5 @@ module.exports = function(grunt) {
         pattern: ['grunt-*', '@*/grunt-*']
     });
     grunt.registerTask('default', ['watch']);
-    grunt.config('buildPlatform', grunt.option('platform') || 'firefox');
+    grunt.config('buildPlatform', grunt.option('platform') || 'chrome');
 };

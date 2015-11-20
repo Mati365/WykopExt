@@ -5,7 +5,7 @@
   "authors": [
     "mateusz <cziken58@gmail.com>"
   ],
-  "description": "A simple Google Chrome extension that show notifications from Wykop.pl",
+  "description": "A simple browser extension that shows notifications from Wykop.pl",
   "moduleType": [
     "amd"
   ],

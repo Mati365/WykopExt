@@ -1,5 +1,5 @@
 ///<reference path="../../../ext/ts/background/background.ts"/>
-///<reference path="../../../ext/ts/ui/defs.ts"/>
+///<reference path="../../../typings/tsd.d.ts"/>
 
 module Ext.Background {
     /** API pod firefoxa jest złączone z content script */
