@@ -1,6 +1,11 @@
 # WykopExt
 A simple browser extension that show notifications from Wykop.pl
 
+# Direct install
+![](https://avatars2.githubusercontent.com/u/191904?v=3&s=24) **Opera:** https://addons.opera.com/pl/extensions/details/wykopext/?display=pl
+
+![](https://raw.githubusercontent.com/alrra/browser-logos/master/firefox/firefox_24x24.png) **Firefox:** https://addons.mozilla.org/pl/firefox/addon/wykopext/
+
 # Installation from source:
 **Chrome:**
 ```
