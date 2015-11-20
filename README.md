@@ -1,5 +1,7 @@
 # WykopExt
 A simple browser extension that show notifications from Wykop.pl
+<br>
+<img src="/screenshots/1.png" align="right" />
 
 # Direct install
 ![](https://avatars2.githubusercontent.com/u/191904?v=3&s=24) **Opera:** https://addons.opera.com/pl/extensions/details/wykopext/?display=pl
@@ -25,11 +27,6 @@ In build folder:
 jpm xpi
 ```
 Drag and drop extension to firefox.
-
-## Screenshots
-![Screenshoot](/screenshots/1.png?raw=true "Screen")
-![Screenshoot](/screenshots/2.png?raw=true "Screen")
-![Screenshoot](/screenshots/3.png?raw=true "Screen")
 
 ## License
 The MIT License (MIT)
