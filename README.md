@@ -6,7 +6,7 @@ A simple browser extension that show notifications from Wykop.pl
 # Direct install
 ![](https://avatars2.githubusercontent.com/u/191904?v=3&s=24) **Opera:** https://addons.opera.com/pl/extensions/details/wykopext/?display=pl
 
-![](https://raw.githubusercontent.com/alrra/browser-logos/master/firefox/firefox_24x24.png) **Firefox:** https://addons.mozilla.org/pl/firefox/addon/wykopext/
+![](https://raw.githubusercontent.com/alrra/browser-logos/master/firefox/firefox_24x24.png) **Firefox:** https://github.com/Mati365/WykopExt/releases
 
 # Installation from source:
 **Chrome:**
@@ -16,8 +16,6 @@ grunt build --platform=chrome
 Drag and drop build folder to chrome://extension
 
 **Mozilla Firefox:**<br />
-_Marketplace link:_ https://addons.mozilla.org/firefox/addon/wykopext/<br />
-or
 ```
 grunt build --platform=firefox
 
