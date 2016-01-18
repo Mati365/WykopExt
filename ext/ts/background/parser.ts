@@ -44,7 +44,7 @@ module Ext.Parser {
             $
                 .ajax(<JQueryAjaxSettings> {
                       type: 'GET'
-                    , url: link + '/hash/' + this.cache.hash
+                    , url: this.wykopURL + '/' + link + '/hash/' + this.cache.hash
                     , xhrFields: {
                         withCredentials: true
                     }
@@ -60,15 +60,13 @@ module Ext.Parser {
 
         /** Pobieranie ilości powiadomień */
         private getNotificationsCount() {
-            return this.parseSource(() => {
-                return this.makeAjax2Request('http://www.wykop.pl/ajax2/powiadomienia/mine').then((d: string) => {
-                    let notify = d.match(/"count":(\d*),"hcount":(\d*)/);
-                    if(!notify) {
-                        this.cache.html = '';
-                        return [0, 0];
-                    } else
-                        return [notify[1], notify[2]];
-                });
+            return this.makeAjax2Request('ajax2/powiadomienia/mine').then((d: string) => {
+                let notify = d.match(/"count":(\d*),"hcount":(\d*)/);
+                if(!notify) {
+                    this.cache.html = '';
+                    return [0, 0];
+                } else
+                    return [notify[1], notify[2]];
             });
         }
 
@@ -117,17 +115,15 @@ module Ext.Parser {
         private cachedNotifications: number[] = [0, 0];
         public Notifications = {
               getCount: () => {
-                return this.getNotificationsCount().then(data => {
-                    return (this.cachedNotifications = data)[0];
-                });
+                return this.getNotificationsCount().then(data => (this.cachedNotifications = <any> data)[0]);
             }
             , getTagsCount: () => {
                 return $.Deferred().resolve(this.cachedNotifications[1]).promise();
             }
 
             /** Lista powiadomień */
-            , getList:     () => { return this.parseList('li.notification.m-user a'); }
-            , getTagsList: () => { return this.parseList('li.notification.m-tag a'); }
+            , getList:     this.parseList.bind(this, 'li.notification.m-user a')
+            , getTagsList: this.parseList.bind(this, 'li.notification.m-tag a')
         }
     }
 }

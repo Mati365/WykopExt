@@ -66,8 +66,9 @@ module Ext.Background {
         if(_.isEmpty(storage))
             return;
 
-        let user: CoreAppUser = null;
-        if(<any> storage.apiMode === 'false')
+        let user: CoreAppUser = null
+          , useParser = <any> storage.apiMode === 'false';
+        if(useParser)
             user = new Parser.User();
         else {
             let client = new WAPI.Client(
@@ -81,7 +82,7 @@ module Ext.Background {
             initInterval('notify', () => {
                 updateBadge(true);
                 updateBadge(false);
-            }, storage.apiMode ? 6000 : 22000);
+            }, useParser ? 6000 : 22000);
         }
         return user;
     }
