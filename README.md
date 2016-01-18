@@ -24,6 +24,9 @@ In build folder:
 ```
 jpm xpi
 ```
+**Important!**
+Go to **about:config** and change xpinstall.signatures.required to false
+
 Drag and drop extension to firefox.
 
 ## License
