@@ -3,7 +3,7 @@ let data = require('sdk/self').data;
 let panel = require('sdk/panel').Panel({
       contentURL: data.url('popups/popup.html')
     , width: 275
-    , height: 350
+    , height: 427
     , contentScriptFile: [
         /** Background script z chrome */
           data.url('../bower_components/jquery/dist/jquery.min.js')
